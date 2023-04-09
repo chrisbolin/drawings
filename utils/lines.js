@@ -1,16 +1,13 @@
-import React from "https://unpkg.com/es-react@latest/dev/react.js";
-import htm from "https://unpkg.com/htm@latest?module";
+import { react } from "./react.js";
 
-const html = htm.bind(React.createElement);
-
-export function CenteredLine({length, center, angle}) {
-  return html`<line
+export function CenteredLine({length, center, angle, stroke = 'black', strokeWidth}) {
+  return react`<line
     x1="0"
     y1="0"
     x2="${length}"
     y2="0"
-    stroke="black"
-    strokeWidth="5"
+    stroke="${stroke}"
+    strokeWidth="${strokeWidth}"
     transform="translate(${center[0]-length/2} ${center[1]}) rotate(${angle} ${length/2} 0)"
   />`;
 }

@@ -1,31 +1,43 @@
-import React from "https://unpkg.com/es-react@latest/dev/react.js";
-import htm from "https://unpkg.com/htm@latest?module";
-
-const html = htm.bind(React.createElement);
+import { react } from "../utils/react.js";
 
 import { CenteredLine } from "../utils/lines.js";
 import { uniformSum } from "../utils/random.js";
 import { range } from "../utils/core.js";
 
-function RandomLine({length, xMax, yMax}) {
+function RandomLine({length, xMax, yMax, progress, randomSumCount, ...otherProps}) {
   const center = [
-    xMax * uniformSum(1),
-    yMax * uniformSum(1)
+    xMax * uniformSum(randomSumCount),
+    yMax * uniformSum(randomSumCount)
   ];
-  const angle = 360 * Math.random();
+  const angle = uniformSum(1);
+
+  let stroke;
+  if (progress === 0) {
+    stroke = 'yellow';
+  } else if (progress < 3/15) {
+    stroke = 'red';
+  } else if (progress <= 7/15) {
+    stroke = 'blue';
+  } else {
+    stroke = 'black';
+  }
 
   return CenteredLine({
     length,
     center,
-    angle
+    angle,
+    stroke,
+    ...otherProps
   })
 }
 
 export default function Drawing1(props) {
   const height = 400;
   const width = 400;
-  const lineLength = 100;
-  const lineCount = 1000;
+  const lineLength = 200;
+  const lineCount = 15;
+  const randomSumCount = 3;
+  const strokeWidth = 5;
 
   const divStyle = {
     backgroundColor: 'lightgrey',
@@ -45,9 +57,19 @@ export default function Drawing1(props) {
   };
 
   const rendered = range(lineCount)
-    .map(i => html`<${RandomLine} length=${lineLength} key=${i} xMax=${width} yMax=${height}/>`);
+    .map(i => react`
+      <${RandomLine}
+        length=${lineLength}
+        key=${i}
+        xMax=${width}
+        yMax=${height}
+        progress=${i/lineCount}
+        strokeWidth=${strokeWidth}
+        randomSumCount=${randomSumCount}
+        />`)
+    ;
 
-  return html`
+  return react`
   <div style=${divStyle}>
     <svg viewBox="0 0 ${width} ${height}" fill="white" xmlns="http://www.w3.org/2000/svg" style=${svgStyle}>
       ${rendered}
