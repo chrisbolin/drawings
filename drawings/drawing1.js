@@ -30,23 +30,6 @@ export default function Drawing1(props) {
   const randomSumCount = 3;
   const strokeWidth = 1;
 
-  const divStyle = {
-    backgroundColor: 'lightgrey',
-    width: '100vw',
-    height: '100vh'
-  };
-  const svgStyle = {
-    // border: '20px solid black',
-    backgroundColor: 'white',
-    width: '98vw',
-    maxHeight: '90vh',
-    display: 'block',
-    position: 'absolute',
-    top: '1vw',
-    left: '1vw',
-    boxSizing: 'border-box'
-  };
-
   const rendered = range(lineCount)
     .map(i => react`
       <${RandomLine}
@@ -61,10 +44,6 @@ export default function Drawing1(props) {
     ;
 
   return react`
-  <div style=${divStyle}>
-    <svg viewBox="0 0 ${width} ${height}" fill="white" xmlns="http://www.w3.org/2000/svg" style=${svgStyle}>
       ${rendered}
-    </svg>
-  </div>
   `;
 }
