@@ -1,6 +1,6 @@
 import { react } from "./react.js";
 
-export function CenteredLine({length, center, angle, stroke = 'black', strokeWidth}) {
+export function CenteredLine({length, center, angle, strokeWidth = 1, stroke = 'black'}) {
   return react`<line
     x1="0"
     y1="0"
