@@ -1,7 +1,7 @@
 import { react, ReactDOM } from "./utils/react.js";
 
-import Drawing1 from "./drawings/drawing1.js";
-import Drawing2 from "./drawings/drawing2.js";
+import * as drawing1 from "./drawings/drawing1.js";
+import * as drawing2 from "./drawings/drawing2.js";
 
 const divStyle = {
   backgroundColor: 'lightgrey',
@@ -24,7 +24,7 @@ ReactDOM.render(
   react`
     <div style=${divStyle}>
       <svg viewBox="0 0 400 400" fill="white" xmlns="http://www.w3.org/2000/svg" style=${svgStyle}>
-        <${Drawing2}/>
+        <${drawing2.Component}/>
       </svg>
     </div>
   `,

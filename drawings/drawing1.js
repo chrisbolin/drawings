@@ -22,9 +22,10 @@ function RandomLine({length, xMax, yMax, progress, randomSumCount, ...otherProps
   })
 }
 
-export default function Drawing1(props) {
-  const height = 400;
-  const width = 400;
+export const height = 400;
+export const width = 400;
+
+export function Component(props) {
   const lineLength = 200;
   const lineCount = 50;
   const randomSumCount = 3;
