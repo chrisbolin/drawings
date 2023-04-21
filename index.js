@@ -3,6 +3,7 @@ import { React, react, ReactDOM } from "./utils/react.js";
 import * as drawingA from "./drawings/drawingA.js";
 import * as drawingB from "./drawings/drawingB.js";
 import * as drawingC from "./drawings/drawingC.js";
+import * as drawingD from "./drawings/drawingD.js";
 
 const drawing = drawingC;
 
@@ -37,15 +38,30 @@ function DownloadLink() {
   return react`<a style=${downloadLinkStyle} href=${href} download=${filename}>download me</a>`;
 }
 
-function App() {
+function Menu() {
   const [menuShown, setMenuShown] = React.useState(false);
-  function toggleMenu() { setMenuShown(!menuShown); }
+  function toggleMenu() { setMenuShown(!menuShown); console.log(menuShown); }
+  const menuStyle = {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    width: '100vw',
+    height: '100vh',
+    zIndex: 1,
+  }
+  return react`<div style=${menuStyle} onClick=${toggleMenu}>
+    ${menuShown ? DownloadLink() : false}
+  </div>
+  `
+}
+
+function App() {
   return react`
-    <div style=${divStyle} onDoubleClick=${toggleMenu}>
+    <div style=${divStyle}>
       <svg id="mainDrawing" viewBox="0 0 ${drawing.width} ${drawing.height}" fill="white" xmlns="http://www.w3.org/2000/svg" style=${svgStyle}>
         <${drawing.Component}/>
       </svg>
-      ${menuShown ? DownloadLink() : null}
+      <${Menu}/>
     </div>
   `
 }

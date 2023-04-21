@@ -1,5 +1,5 @@
 import { range } from "../utils/core.js";
-import { CenteredLine } from "../utils/lines.js";
+import { FillingLine } from "../utils/lines.js";
 import { react } from "../utils/react.js";
 
 export const width = 600;
@@ -43,12 +43,13 @@ export function Component(){
   return range(lineCount)
     .map(drawingFunction)
     .map(({center, angle}, i) => react`
-      <${CenteredLine}
-        length=${10000}
+      <${FillingLine}
         key=${i}
         center=${center}
         angle=${angle}
         strokeWidth=${1}
+        xBounds=${[0, width]}
+        yBounds=${[0, height]}
         />`)
     ;
 }
