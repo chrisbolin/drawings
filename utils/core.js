@@ -20,3 +20,19 @@ export function roundTo(value, precision) {
 export function floorTo(value, precision) {
   return Math.round(value / precision) * precision;
 }
+
+export function toBinary(number) {
+  return number
+    .toString(2)
+    .split('')
+    .map(parseFloat);
+}
+
+export function sumReduce(previous, current) {
+  previous = previous || 0;
+  return previous + current;
+}
+
+export function sum(array) {
+  return array.reduce(sumReduce);
+}
