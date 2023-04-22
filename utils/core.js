@@ -16,3 +16,7 @@ export function inRange(value, min, max) {
 export function roundTo(value, precision) {
   return Math.round(value / precision) * precision;
 }
+
+export function floorTo(value, precision) {
+  return Math.round(value / precision) * precision;
+}

@@ -4,8 +4,9 @@ import * as drawingA from "./drawings/drawingA.js";
 import * as drawingB from "./drawings/drawingB.js";
 import * as drawingC from "./drawings/drawingC.js";
 import * as drawingD from "./drawings/drawingD.js";
+import * as drawingE from "./drawings/drawingE.js";
 
-const drawing = drawingC;
+const drawing = drawingE;
 
 const divStyle = {
   backgroundColor: 'lightgrey',
@@ -26,31 +27,34 @@ const svgStyle = {
 };
 
 function DownloadLink() {
-  const downloadLinkStyle = {
-    position: 'absolute',
-    top: '10vw',
-    left: '10vh',
-    zIndex: 1,
-  };
-  const filename = '004download.svg';
   const html = document.getElementById('mainDrawing').outerHTML;
-  const href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(html);
-  return react`<a style=${downloadLinkStyle} href=${href} download=${filename}>download me</a>`;
+  const href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(html);
+  return react`<a download href=${href}>download me</a>`;
 }
 
 function Menu() {
   const [menuShown, setMenuShown] = React.useState(false);
   function toggleMenu() { setMenuShown(!menuShown); console.log(menuShown); }
+  const menuToggleStyle = {
+    position: 'fixed',
+    top: '0',
+    right: '0',
+    width: '10vw',
+    height: '10vh',
+    zIndex: 1,
+    cursor: 'context-menu'
+  }
   const menuStyle = {
     position: 'absolute',
-    top: '0',
-    left: '0',
-    width: '100vw',
-    height: '100vh',
+    top: '10vw',
+    right: '10vh',
     zIndex: 1,
-  }
-  return react`<div style=${menuStyle} onClick=${toggleMenu}>
-    ${menuShown ? DownloadLink() : false}
+  };
+  return react`<div>
+    <div style=${menuToggleStyle} onClick=${toggleMenu} />
+    <div style=${menuStyle}>
+      ${menuShown ? DownloadLink() : false}
+    </div>
   </div>
   `
 }

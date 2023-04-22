@@ -1,5 +1,5 @@
 import { range } from "../utils/core.js";
-import { CenteredLine, FillingLine } from "../utils/lines.js";
+import { FillingLine } from "../utils/lines.js";
 import { uniform } from "../utils/random.js";
 import { react } from "../utils/react.js";
 
