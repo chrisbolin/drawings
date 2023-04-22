@@ -29,10 +29,10 @@ const svgStyle = {
 function DownloadLink() {
   const html = document.getElementById('mainDrawing').outerHTML;
   const href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(html);
-  return react`<a download href=${href}>download me</a>`;
+  return react`<a download href=${href}>download</a>`;
 }
 
-function Menu() {
+function Menu({refreshApp}) {
   const [menuShown, setMenuShown] = React.useState(false);
   function toggleMenu() { setMenuShown(!menuShown); console.log(menuShown); }
   const menuToggleStyle = {
@@ -49,23 +49,28 @@ function Menu() {
     top: '10vw',
     right: '10vh',
     zIndex: 1,
+    lineHeight: 2,
+    display: menuShown ? 'block' : 'none'
   };
   return react`<div>
     <div style=${menuToggleStyle} onClick=${toggleMenu} />
     <div style=${menuStyle}>
-      ${menuShown ? DownloadLink() : false}
+      <div><a onClick=${() => refreshApp() && false} href="#">refresh</a></div>
+      <div>${menuShown ? DownloadLink() : false}</div>
     </div>
   </div>
   `
 }
 
 function App() {
+  const [counter, setCounter] = React.useState(0);
+  const refreshApp = () => setCounter(counter + 1);
   return react`
     <div style=${divStyle}>
       <svg id="mainDrawing" viewBox="0 0 ${drawing.width} ${drawing.height}" fill="white" xmlns="http://www.w3.org/2000/svg" style=${svgStyle}>
         <${drawing.Component}/>
       </svg>
-      <${Menu}/>
+      <${Menu} refreshApp=${refreshApp}/>
     </div>
   `
 }
