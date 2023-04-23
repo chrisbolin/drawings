@@ -7,6 +7,8 @@ import * as drawingD from "./drawings/drawingD.js";
 import * as drawingE from "./drawings/drawingE.js";
 import * as drawingF from "./drawings/drawingF.js";
 
+import * as debugA from "./drawings/debugA.js";
+
 const drawing = drawingF;
 
 const divStyle = {
@@ -27,31 +29,41 @@ const svgStyle = {
   boxSizing: 'border-box'
 };
 
-function DownloadLink() {
-  const html = document.getElementById('mainDrawing').outerHTML;
-  const href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(html);
-  return react`<a download href=${href}>download</a>`;
+function launchDownload() {
+  const svgXML = document.getElementById('mainDrawing').outerHTML;
+  // Construct the <a> element
+  var link = document.createElement("a");
+  link.download = 'download.svg';
+  // Construct the uri
+  var uri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgXML)
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  // Cleanup the DOM
+  document.body.removeChild(link);
 }
 
 function Menu({refreshApp}) {
-  const [menuShown, setMenuShown] = React.useState(false);
-  function toggleMenu() { setMenuShown(!menuShown); console.log(menuShown); }
+  const [menuShown, setMenuShown] = React.useState(true);
+  
+  function toggleMenu() { setMenuShown(!menuShown); }
   const menuToggleStyle = {
     position: 'fixed',
     top: '0',
     right: '0',
-    width: '10vw',
-    height: '10vh',
+    width: '3vw',
+    height: '3vh',
     zIndex: 1,
-    cursor: 'context-menu'
+    backgroundColor: menuShown ? 'lightgrey' : 'transparent',
+    cursor: 'pointer'
   }
   const menuStyle = {
     backgroundColor: 'white',
     padding: '25px',
-    border: '5px black',
-    position: 'absolute',
-    top: '5vw',
-    right: '5vh',
+    border: '1px dashed black',
+    position: 'fixed',
+    top: '3vw',
+    right: '3vh',
     zIndex: 1,
     lineHeight: 2,
     display: menuShown ? 'block' : 'none'
@@ -59,8 +71,8 @@ function Menu({refreshApp}) {
   return react`<div>
     <div style=${menuToggleStyle} onClick=${toggleMenu} />
     <div style=${menuStyle}>
-      <div><a onClick=${() => refreshApp() && false} href="#">refresh</a></div>
-      <div>${menuShown ? DownloadLink() : false}</div>
+      <div><a onClick=${refreshApp} href="#">refresh</a></div>
+      <div><a onClick=${launchDownload} href="#">download</a></div>
     </div>
   </div>
   `
