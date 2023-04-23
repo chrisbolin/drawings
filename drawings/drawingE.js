@@ -9,7 +9,7 @@ export const height = 48;
 const diagonal = Math.sqrt(width*width + height*height);
 const thickness = 1/16; // inch
 
-const COLORS = ['black', 'firebrick', 'gold', 'blue']
+const COLORS = ['black', 'firebrick', 'gold', 'blue'];
 const COLUMNS = 4;
 const LINES = 1000;
 

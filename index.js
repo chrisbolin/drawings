@@ -46,9 +46,12 @@ function Menu({refreshApp}) {
     cursor: 'context-menu'
   }
   const menuStyle = {
+    backgroundColor: 'white',
+    padding: '25px',
+    border: '5px black',
     position: 'absolute',
-    top: '10vw',
-    right: '10vh',
+    top: '5vw',
+    right: '5vh',
     zIndex: 1,
     lineHeight: 2,
     display: menuShown ? 'block' : 'none'

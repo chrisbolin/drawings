@@ -18,14 +18,20 @@ export function roundTo(value, precision) {
 }
 
 export function floorTo(value, precision) {
-  return Math.round(value / precision) * precision;
+  return Math.floor(value / precision) * precision;
 }
 
-export function toBinary(number) {
-  return number
+export function toBinary(number, minimumLength = 0) {
+  const binary = number
     .toString(2)
     .split('')
     .map(parseFloat);
+
+  const shortfall = minimumLength - binary.length;
+  if (shortfall > 0) {
+    return range(shortfall).map(() => 0).concat(binary)
+  }
+  return binary;
 }
 
 export function sumReduce(previous, current) {
@@ -35,4 +41,10 @@ export function sumReduce(previous, current) {
 
 export function sum(array) {
   return array.reduce(sumReduce);
+}
+
+export function zip(arrayA, arrayB) {
+  return arrayA.map((el, i) =>
+    [el, arrayB[i]]
+  );
 }
