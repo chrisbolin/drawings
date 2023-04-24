@@ -28,7 +28,7 @@ function f010() {
     strokeWidth: 1/50,
     separation: 1/50,
     fullPalette: [
-      'firebrick',
+      'red',
       'blue',
       'gold',
       'violet',

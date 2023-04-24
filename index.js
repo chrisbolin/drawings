@@ -6,10 +6,9 @@ import * as drawingC from "./drawings/drawingC.js";
 import * as drawingD from "./drawings/drawingD.js";
 import * as drawingE from "./drawings/drawingE.js";
 import * as drawingF from "./drawings/drawingF.js";
+import * as drawingG from "./drawings/drawingG.js";
 
-import * as debugA from "./drawings/debugA.js";
-
-const drawing = drawingF;
+const drawing = drawingG;
 
 const divStyle = {
   backgroundColor: 'lightgrey',
