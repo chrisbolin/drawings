@@ -1,12 +1,12 @@
 import { React, react, ReactDOM } from "./utils/react.mjs";
 
-import * as drawingA from "./drawings/drawingA.js";
-import * as drawingB from "./drawings/drawingB.js";
-import * as drawingC from "./drawings/drawingC.js";
-import * as drawingD from "./drawings/drawingD.js";
-import * as drawingE from "./drawings/drawingE.js";
-import * as drawingF from "./drawings/drawingF.js";
-import * as drawingG from "./drawings/drawingG.js";
+import * as drawingA from "./drawings/drawingA.mjs";
+import * as drawingB from "./drawings/drawingB.mjs";
+import * as drawingC from "./drawings/drawingC.mjs";
+import * as drawingD from "./drawings/drawingD.mjs";
+import * as drawingE from "./drawings/drawingE.mjs";
+import * as drawingF from "./drawings/drawingF.mjs";
+import * as drawingG from "./drawings/drawingG.mjs";
 
 const drawing = drawingG;
 
