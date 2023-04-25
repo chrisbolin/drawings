@@ -1,5 +1,5 @@
-import { range } from "../utils/core.js";
-import { react } from "../utils/react.js";
+import { range } from "../utils/core.mjs";
+import { react } from "../utils/react.mjs";
 
 function centerOfMass(points) {
   const n = points.length;

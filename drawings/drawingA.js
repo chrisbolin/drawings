@@ -1,8 +1,8 @@
-import { react } from "../utils/react.js";
+import { react } from "../utils/react.mjs";
 
-import { CenteredLine } from "../utils/lines.js";
-import { uniformSum, uniform } from "../utils/random.js";
-import { range } from "../utils/core.js";
+import { CenteredLine } from "../utils/lines.mjs";
+import { uniformSum, uniform } from "../utils/random.mjs";
+import { range } from "../utils/core.mjs";
 
 function RandomLine({length, xMax, yMax, progress, randomSumCount, ...otherProps}) {
   const center = [

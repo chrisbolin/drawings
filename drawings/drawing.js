@@ -1,4 +1,4 @@
-import { react } from "../utils/react.js";
+import { react } from "../utils/react.mjs";
 
 export const height = 400;
 export const width = 400;

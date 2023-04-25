@@ -48,3 +48,32 @@ export function zip(arrayA, arrayB) {
     [el, arrayB[i]]
   );
 }
+
+export function permutations(array, k) {
+  const n = array.length;
+  if (k === 0) return [[]];
+  
+  return range(n).flatMap(i => {
+    const element = array[i];
+    const subset = [...array];
+    subset.splice(i, 1);
+
+    return permutations(subset, k-1).map(sub => 
+      [element].concat(sub)
+    );
+  })
+}
+
+export function combinations(array, k) {
+  const n = array.length;
+  if (k === 0) return [[]];
+  
+  return range(n).flatMap(i => {
+    const element = array[i];
+    const subset = array.slice(i + 1);
+
+    return combinations(subset, k-1).map(sub => 
+      [element].concat(sub)
+    );
+  })
+}

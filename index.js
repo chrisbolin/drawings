@@ -1,4 +1,4 @@
-import { React, react, ReactDOM } from "./utils/react.js";
+import { React, react, ReactDOM } from "./utils/react.mjs";
 
 import * as drawingA from "./drawings/drawingA.js";
 import * as drawingB from "./drawings/drawingB.js";

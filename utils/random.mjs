@@ -1,4 +1,4 @@
-import { range, floorTo } from "./core.js";
+import { range, floorTo } from "./core.mjs";
 
 export function uniform(min = 0, max = 1, precision = false) {
   const value = Math.random() * (max - min) + min;

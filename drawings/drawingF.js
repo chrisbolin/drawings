@@ -1,7 +1,7 @@
-import { range, roundTo, sum, toBinary, zip } from "../utils/core.js";
-import { CenteredLine } from "../utils/lines.js";
-import { shuffle, uniform } from "../utils/random.js";
-import { react } from "../utils/react.js";
+import { range, roundTo, sum, toBinary, zip } from "../utils/core.mjs";
+import { CenteredLine } from "../utils/lines.mjs";
+import { shuffle, uniform } from "../utils/random.mjs";
+import { react } from "../utils/react.mjs";
 
 function f009() {
   return {

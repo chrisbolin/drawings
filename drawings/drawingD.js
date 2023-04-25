@@ -1,7 +1,7 @@
-import { range } from "../utils/core.js";
-import { FillingLine } from "../utils/lines.js";
-import { uniform } from "../utils/random.js";
-import { react } from "../utils/react.js";
+import { range } from "../utils/core.mjs";
+import { FillingLine } from "../utils/lines.mjs";
+import { uniform } from "../utils/random.mjs";
+import { react } from "../utils/react.mjs";
 
 export const width = 600;
 export const height = 400;

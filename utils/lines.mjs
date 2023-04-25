@@ -1,5 +1,5 @@
-import { inRange, unique } from "./core.js";
-import { react } from "./react.js";
+import { inRange, unique } from "./core.mjs";
+import { react } from "./react.mjs";
 
 export function CenteredLine({length, center, angle, strokeWidth = 1, stroke = 'black'}) {
   return react`<line

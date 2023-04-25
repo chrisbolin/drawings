@@ -1,6 +1,6 @@
-import { range, roundTo, sum, toBinary, zip } from "../utils/core.js";
-import { CenteredLine } from "../utils/lines.js";
-import { react } from "../utils/react.js";
+import { range, roundTo, sum, toBinary, zip } from "../utils/core.mjs";
+import { CenteredLine } from "../utils/lines.mjs";
+import { react } from "../utils/react.mjs";
 
 export const width = 5.5;
 export const height = 3.5;
