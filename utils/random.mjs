@@ -1,6 +1,6 @@
-import { range, floorTo } from "./core.mjs";
+import { range, floorTo, sortBy, sum } from "./core.mjs";
 
-export function uniform(min = 0, max = 1, precision = false) {
+export function uniform(min = 0, max = 1, precision) {
   const value = Math.random() * (max - min) + min;
   if (precision) {return floorTo(value, precision);}
   return value;
@@ -25,4 +25,21 @@ export function shuffle(list) {
     const [newIndex] = indexes.splice(sliceIndex, 1);
     return list[newIndex];
   });
+}
+
+export function sample(array, n) {
+  // sample without replacement, and also allow for oversampling
+  const randomOffset = uniform(0, array.length, 1);
+  return shuffle(range(n)).map(
+    i => array[(i + randomOffset) % array.length]
+  );
+}
+
+export function dispearse(array, strength) {
+  return range(array.length)
+    .map(oldIndex => ({
+      oldIndex, newValue: oldIndex + strength * uniform(-1, 1)
+    })).sort(
+      sortBy(el => el.newValue)
+    ).map(el => array[el.oldIndex]);
 }

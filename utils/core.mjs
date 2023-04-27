@@ -34,13 +34,34 @@ export function toBinary(number, minimumLength = 0) {
   return binary;
 }
 
-export function sumReduce(previous, current) {
-  previous = previous || 0;
-  return previous + current;
+export function sumReduce() {
+  return [
+    (previous, current) => previous + current,
+    0
+  ]
 }
 
 export function sum(array) {
-  return array.reduce(sumReduce);
+  return array.reduce(...sumReduce());
+}
+
+export function groupReduce(getKey) {
+  return [
+    (grouped, current) => {
+      grouped = grouped || {};
+      const key = getKey(current);
+      if (!(key in grouped)) {
+        grouped[key] = [];
+      }
+      grouped[key].push(current);
+      return grouped;
+    },
+    {}
+  ];
+}
+
+export function sortBy(getKey) {
+  return (a, b) => getKey(a) - getKey(b);
 }
 
 export function zip(arrayA, arrayB) {

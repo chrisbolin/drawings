@@ -30,7 +30,7 @@ export function FillingLine({center, angle, xBounds, yBounds, strokeWidth = 1, s
   });
 
   points = unique(points).filter(([x, y]) => inRange(x, ...xBounds) && inRange(y, ...yBounds));
-  if (points.length < 2) throw new Error(`FillingLine error. Too few points. ${points.map(String)}`);
+  if (points.length < 2) return false;
   if (points.length > 2) throw new Error(`FillingLine error. Too many points. ${points.map(String)}`);
 
   return react`<line

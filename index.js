@@ -1,4 +1,5 @@
 import { React, react, ReactDOM } from "./utils/react.mjs";
+import { groupReduce } from "./utils/core.mjs";
 
 import * as drawingA from "./drawings/drawingA.mjs";
 import * as drawingB from "./drawings/drawingB.mjs";
@@ -7,8 +8,9 @@ import * as drawingD from "./drawings/drawingD.mjs";
 import * as drawingE from "./drawings/drawingE.mjs";
 import * as drawingF from "./drawings/drawingF.mjs";
 import * as drawingG from "./drawings/drawingG.mjs";
+import * as drawingH from "./drawings/drawingH.mjs";
 
-const drawing = drawingG;
+const drawing = drawingH;
 
 const divStyle = {
   backgroundColor: 'lightgrey',
@@ -53,7 +55,6 @@ function Menu({refreshApp}) {
     width: '3vw',
     height: '3vh',
     zIndex: 1,
-    backgroundColor: menuShown ? 'lightgrey' : 'transparent',
     cursor: 'pointer'
   }
   const menuStyle = {
@@ -77,13 +78,30 @@ function Menu({refreshApp}) {
   `
 }
 
+function groupByStroke(renderedElements) {
+  if (!renderedElements.length) return renderedElements;
+  return Object.entries(
+    renderedElements
+      .reduce(...groupReduce(el => el?.props?.stroke || 'none'))
+  ).map(([groupKey, group], i) => {
+    const id = `${i}-${groupKey}`;
+    return react`<g id=${id} key=${id}>
+      ${group}
+    </g>`;
+  });
+}
+
+
+
 function App() {
   const [counter, setCounter] = React.useState(0);
   const refreshApp = () => setCounter(counter + 1);
+  const renderedElements = drawing.Component();
+  console.log({renderedElements})
   return react`
     <div style=${divStyle}>
       <svg id="mainDrawing" viewBox="0 0 ${drawing.width} ${drawing.height}" fill="white" xmlns="http://www.w3.org/2000/svg" style=${svgStyle}>
-        <${drawing.Component}/>
+        ${groupByStroke(renderedElements)}
       </svg>
       <${Menu} refreshApp=${refreshApp}/>
     </div>

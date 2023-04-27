@@ -1,56 +1,82 @@
-import { combinations, range } from "../utils/core.mjs";
-import { FillingLine } from "../utils/lines.mjs";
-import { uniform } from "../utils/random.mjs";
+import { combinations, groupReduce, range } from "../utils/core.mjs";
+import { FillingLine, CenteredLine } from "../utils/lines.mjs";
+import { sample, uniform } from "../utils/random.mjs";
 import { react } from "../utils/react.mjs";
 
 export const height = 4;
 export const width = 6;
 
-const sections = [
-  [2, 3], // 6
-  [3, 5], // 15
-  [4, 5], // 20
-  [3, 5], // 15
-  [2, 3], // 6
-  [1, 1], // 1
-];
+function $011g(){
+  return {
+    fullPalette: [
+      'red',
+      'blue',
+      'yellow',
+      'purple',
+      'orange',
+      'green',
+    ],
+    startK: 1,
+  }
+}
 
-const fullPalette = [
-  'red',
-  'blue',
-  'gold',
-  'violet',
-  'orange',
-  'green',
-];
+function $012g(){
+  return {
+    fullPalette: [
+      'red',
+      'blue',
+      'yellow',
+      'purple',
+      'orange',
+      'green',
+    ],
+    startK: 2,
+  }
+}
 
-const strokeWidth = 0.02;
+function $013g(){
+  return {
+    fullPalette: [
+      'blue',
+      'red',
+      'orange',
+      'gold',
+    ],
+    startK: 2,
+  }
+}
+
+const config = $012g();
+
+const strokeWidth = 1/45;
 
 export function Component(props) {
-  const sectionWidth = width / sections.length; 
-  return sections.flatMap(([xSections, ySections], i) => {
-    const chooseK = i + 1;
-    const boxWidth = sectionWidth / xSections;
+  const { fullPalette, startK } = config;
+  const sections = fullPalette.length + 1 - startK;
+  const sectionWidth = width / sections; 
+  const groups = range(sections).flatMap((iSection) => {
+    const chooseK = iSection + startK;
+    const palettes = combinations(fullPalette, chooseK);
+    const ySections = palettes.length;
+    const boxWidth = sectionWidth;
     const boxHeight = height / ySections;
     const linesPerBox = Math.round(boxWidth / strokeWidth);
-    const palettes = combinations(fullPalette, chooseK);
     let paletteIndex = 0;
-    return range(xSections).flatMap(j => range(ySections).flatMap(k => {
+    return range(ySections).flatMap(iSubsection => {
       const palette = palettes[paletteIndex];
       paletteIndex++;
-      const x0 = (i * sectionWidth) + (j * boxWidth);
+      const x0 = (iSection * sectionWidth);
       const xBounds = [0, width]; // doesn't matter, as all lines are vertical
       const yBounds = [
-        k * boxHeight, // all sections start boxes at the top, y=0
-        (k + 1) * boxHeight
+        iSubsection * boxHeight, // all sections start boxes at the top, y=0
+        (iSubsection + 1) * boxHeight - strokeWidth
       ];
-      console.log({chooseK, palette, j, k});
-      return range(linesPerBox).flatMap(l => {
-        const stroke = palette[uniform(0, palette.length, 1)];
-        const x = x0 + l * strokeWidth;
+      return sample(palette, linesPerBox).flatMap((stroke, iLine) => {
+        const x = x0 + iLine * strokeWidth;
         const center = [x, 0]; // y doesn't matter, as all lines are vertical
+
         return react`<${FillingLine}
-          key="${i}.${j}.${k}.${l}"
+          key="${iSection}.${iSubsection}.${iLine}"
           center=${center}
           xBounds=${xBounds}
           yBounds=${yBounds}
@@ -59,6 +85,14 @@ export function Component(props) {
           strokeWidth=${strokeWidth}
         />`;
       });
-    }))
-  });
+    })
+  }).reduce(...groupReduce(el => el.props.stroke));
+
+  return Object.entries(groups)
+    .map(([groupKey, group], i) => {
+      const id = `${i}-${groupKey}`;
+      return react`<g id=${id} key=${id}>
+        ${group}
+      </g>`;
+    });
 }
