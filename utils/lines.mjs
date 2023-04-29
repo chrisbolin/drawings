@@ -1,5 +1,6 @@
+import context from "./context.mjs";
 import { inRange, unique } from "./core.mjs";
-import { react } from "./react.mjs";
+import { React, react } from "./react.mjs";
 
 export function CenteredLine({length, center, angle, strokeWidth = 1, stroke = 'black'}) {
   return react`<line
@@ -13,7 +14,11 @@ export function CenteredLine({length, center, angle, strokeWidth = 1, stroke = '
   />`;
 }
 
-export function FillingLine({center, angle, xBounds, yBounds, strokeWidth = 1, stroke = 'black'}) {
+export function FillingLine({center, angle, xBounds, yBounds, strokeWidth, stroke = 'black'}) {
+  const ctx = React.useContext(context);
+  xBounds = xBounds || [0, ctx.width];
+  yBounds = yBounds || [0, ctx.height];
+  strokeWidth = strokeWidth || ctx.strokeWidth
   const [x0, y0] = center;
   const m = Math.tan(angle / 180 * Math.PI); // slope
 

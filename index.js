@@ -1,6 +1,8 @@
 import { React, react, ReactDOM } from "./utils/react.mjs";
 import { groupReduce } from "./utils/core.mjs";
+import context from "./utils/context.mjs";
 
+import * as drawingTemplate from "./drawings/drawing.mjs";
 import * as drawingA from "./drawings/drawingA.mjs";
 import * as drawingB from "./drawings/drawingB.mjs";
 import * as drawingC from "./drawings/drawingC.mjs";
@@ -9,10 +11,11 @@ import * as drawingE from "./drawings/drawingE.mjs";
 import * as drawingF from "./drawings/drawingF.mjs";
 import * as drawingG from "./drawings/drawingG.mjs";
 import * as drawingH from "./drawings/drawingH.mjs";
+import * as drawingI from "./drawings/drawingI.mjs";
 
-const drawing = drawingH;
+const drawing = drawingI;
 
-const divStyle = {
+const appStyle = {
   backgroundColor: 'lightgrey',
   width: '100vw',
   height: '100vh',
@@ -91,18 +94,42 @@ function groupByStroke(renderedElements) {
   });
 }
 
+function SVG({ width, height, children }) {
+  const groupedChildren = groupByStroke(children);
+  return react`
+    <svg id="mainDrawing" viewBox="0 0 ${width} ${height}" fill="white" xmlns="http://www.w3.org/2000/svg" style=${svgStyle}>
+      ${groupedChildren}
+    </svg>
+  `;
+}
 
+function LegacyWrapper({ drawing }) {
+  return react`
+    <${SVG} width=${drawing.width} height=${drawing.height}>
+      <${drawing.Component}/>
+    </${SVG}>
+  `;
+}
+
+function DefaultWrapper({ drawing }) {
+  const variant = drawing.variants[0];
+  const settings = variant();
+  return react`
+    <${context.Provider} value=${settings}>
+      <${SVG} width=${settings.width} height=${settings.height}>
+      <${drawing.Component} ...${settings}/>
+      </${SVG}>
+    </${context.Provider}>
+  `;
+}
 
 function App() {
   const [counter, setCounter] = React.useState(0);
   const refreshApp = () => setCounter(counter + 1);
-  const renderedElements = drawing.Component();
-  console.log({renderedElements})
+  const Wrapper = drawing.wrapper ? DefaultWrapper : LegacyWrapper;
   return react`
-    <div style=${divStyle}>
-      <svg id="mainDrawing" viewBox="0 0 ${drawing.width} ${drawing.height}" fill="white" xmlns="http://www.w3.org/2000/svg" style=${svgStyle}>
-        ${groupByStroke(renderedElements)}
-      </svg>
+    <div style=${appStyle}>
+      <${Wrapper} drawing=${drawing} />
       <${Menu} refreshApp=${refreshApp}/>
     </div>
   `
