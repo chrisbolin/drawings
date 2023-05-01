@@ -2,7 +2,10 @@ import context from "./context.mjs";
 import { inRange, unique } from "./core.mjs";
 import { React, react } from "./react.mjs";
 
+export const NONE_STROKE = 'none';
+
 export function CenteredLine({length, center, angle, strokeWidth = 1, stroke = 'black'}) {
+  if (stroke === NONE_STROKE) return false;
   return react`<line
     x1="0"
     y1="0"
@@ -15,7 +18,10 @@ export function CenteredLine({length, center, angle, strokeWidth = 1, stroke = '
 }
 
 export function FillingLine({center, angle, xBounds, yBounds, strokeWidth, stroke = 'black'}) {
+  if (stroke === NONE_STROKE) return false;
+
   const ctx = React.useContext(context);
+
   xBounds = xBounds || [0, ctx.width];
   yBounds = yBounds || [0, ctx.height];
   strokeWidth = strokeWidth || ctx.strokeWidth

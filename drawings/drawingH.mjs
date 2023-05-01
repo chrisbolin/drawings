@@ -1,22 +1,44 @@
 import { react } from "../utils/react.mjs";
-import { FillingLine } from "../utils/lines.mjs";
+import { FillingLine, NONE_STROKE } from "../utils/lines.mjs";
 import { range } from "../utils/core.mjs";
 import { dispearse } from "../utils/random.mjs";
 
 export const height = 4;
 export const width = 6;
 
-const initialColors = [
-  'white',
-  'yellow',
-  'red', 
-  'blue'
-];
-const strokeWidth = 1/45;
-const sections = 30;
-const strength = section => 4 + 1.2 * section;
+function f013() {
+  return {
+    initialColors: [
+      'white',
+      'yellow',
+      'red', 
+      'blue'
+    ],
+    strokeWidth: 1/45,
+    sections: 30,
+    strength: section => 4 + 1.2 * section,
+  };
+};
+
+function f014() {
+  return {
+    initialColors: [
+      NONE_STROKE,
+      NONE_STROKE,
+      'black',
+      NONE_STROKE
+    ],
+    strokeWidth: 1/100,
+    sections: 30,
+    strength: section => 4 + 2 * section,
+  };
+};
+
+
+const variant = f014();
 
 export function Component(props) {
+  const {initialColors, strokeWidth, sections, strength} = variant;
   const sectionWidth = width/sections;
   const linesPerSection = Math.round(height/strokeWidth);
   let lineColors = range(linesPerSection)
