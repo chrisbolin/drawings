@@ -3,13 +3,14 @@ import { FillingLine, NONE_STROKE } from "../utils/lines.mjs";
 import { range } from "../utils/core.mjs";
 import { dispearse } from "../utils/random.mjs";
 
-export const height = 4;
-export const width = 6;
+const height = 4;
+const width = 6;
 
 export const wrapper = true;
 
 export const variants = [
   function f013() {
+    const strokeWidth = 1/45;
     return {
       initialColors: [
         'white',
@@ -17,14 +18,16 @@ export const variants = [
         'red', 
         'blue'
       ],
-      strokeWidth: 1/45,
+      strokeWidth,
+      endMargin: strokeWidth,
       sections: 30,
       strength: section => 4 + 1.2 * section,
       height,
       width
     };
   },
-  function f014() {
+  function f015() {
+    const strokeWidth = 1/100;
     return {
       initialColors: [
         NONE_STROKE,
@@ -32,16 +35,36 @@ export const variants = [
         'black',
         NONE_STROKE
       ],
-      strokeWidth: 1/100,
+      strokeWidth,
+      endMargin: strokeWidth,
       sections: 30,
       strength: section => 4 + 2 * section,
       height,
       width
     };
+  },
+  function f016() {
+    return {
+      initialColors: [
+        NONE_STROKE,
+        NONE_STROKE,
+        'black',
+        NONE_STROKE,
+        NONE_STROKE
+      ],
+      strokeWidth: 1/100,
+      endMargin: 0,
+      sections: 30,
+      strength: section => 4 + 1.3 * section,
+      height,
+      width
+    };
   }
 ];
-export function Component(props) {
-  const {initialColors, strokeWidth, sections, strength} = props;
+
+export function Component({
+  initialColors, strokeWidth, sections, strength, height, width, endMargin
+}) {
   const sectionWidth = width/sections;
   const linesPerSection = Math.round(height/strokeWidth);
   let lineColors = range(linesPerSection)
@@ -50,7 +73,7 @@ export function Component(props) {
     ]);
   return range(sections).flatMap(section => {
     const x0 = section * sectionWidth;
-    const x1 = (section + 1) * sectionWidth - strokeWidth;
+    const x1 = (section + 1) * sectionWidth - endMargin;
     const lines = lineColors.map((stroke, line) => {
       const y = line * strokeWidth;
       return react`
