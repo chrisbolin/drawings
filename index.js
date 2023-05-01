@@ -112,7 +112,7 @@ function LegacyWrapper({ drawing }) {
 }
 
 function DefaultWrapper({ drawing }) {
-  const variant = drawing.variants[0];
+  const variant = drawing.variants[drawing.variants.length - 1];
   const settings = variant();
   return react`
     <${context.Provider} value=${settings}>

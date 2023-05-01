@@ -6,39 +6,42 @@ import { dispearse } from "../utils/random.mjs";
 export const height = 4;
 export const width = 6;
 
-function f013() {
-  return {
-    initialColors: [
-      'white',
-      'yellow',
-      'red', 
-      'blue'
-    ],
-    strokeWidth: 1/45,
-    sections: 30,
-    strength: section => 4 + 1.2 * section,
-  };
-};
+export const wrapper = true;
 
-function f014() {
-  return {
-    initialColors: [
-      NONE_STROKE,
-      NONE_STROKE,
-      'black',
-      NONE_STROKE
-    ],
-    strokeWidth: 1/100,
-    sections: 30,
-    strength: section => 4 + 2 * section,
-  };
-};
-
-
-const variant = f014();
-
+export const variants = [
+  function f013() {
+    return {
+      initialColors: [
+        'white',
+        'yellow',
+        'red', 
+        'blue'
+      ],
+      strokeWidth: 1/45,
+      sections: 30,
+      strength: section => 4 + 1.2 * section,
+      height,
+      width
+    };
+  },
+  function f014() {
+    return {
+      initialColors: [
+        NONE_STROKE,
+        NONE_STROKE,
+        'black',
+        NONE_STROKE
+      ],
+      strokeWidth: 1/100,
+      sections: 30,
+      strength: section => 4 + 2 * section,
+      height,
+      width
+    };
+  }
+];
 export function Component(props) {
-  const {initialColors, strokeWidth, sections, strength} = variant;
+  const {initialColors, strokeWidth, sections, strength} = props;
   const sectionWidth = width/sections;
   const linesPerSection = Math.round(height/strokeWidth);
   let lineColors = range(linesPerSection)
