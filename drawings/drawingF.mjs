@@ -3,46 +3,44 @@ import { CenteredLine } from "../utils/lines.mjs";
 import { shuffle, uniform } from "../utils/random.mjs";
 import { react } from "../utils/react.mjs";
 
-function f009() {
-  return {
-    width: 5.5,
-    height: 3.5,
-    density: 1, 
-    strokeWidth: 1/64,
-    separation: 1/64,
-    fullPalette: [
-      'black',
-      'firebrick',
-      'blue',
-      'gold'
-    ],
-    binaryFilter: binary => sum(binary) >= 3,
-  };
-}
+export const wrapper = true;
 
-function f010() {
-  return {
-    width: 5.5,
-    height: 3.5,
-    density: 1, 
-    strokeWidth: 1/50,
-    separation: 1/50,
-    fullPalette: [
-      'red',
-      'blue',
-      'gold',
-      'violet',
-      'orange',
-      'green',
-    ],
-    binaryFilter: binary => sum(binary) === 4,
-  };
-}
-
-const config = f010();
-
-export const width = config.width;
-export const height = config.height;
+export const variants = [
+  function f009() {
+    return {
+      width: 5.5,
+      height: 3.5,
+      density: 1, 
+      strokeWidth: 1/64,
+      separation: 1/64,
+      fullPalette: [
+        'black',
+        'firebrick',
+        'blue',
+        'gold'
+      ],
+      binaryFilter: binary => sum(binary) >= 3,
+    };
+  },
+  function f010() {
+    return {
+      width: 5.5,
+      height: 3.5,
+      density: 1, 
+      strokeWidth: 1/50,
+      separation: 1/50,
+      fullPalette: [
+        'red',
+        'blue',
+        'gold',
+        'violet',
+        'orange',
+        'green',
+      ],
+      binaryFilter: binary => sum(binary) === 4,
+    };
+  }  
+];
 
 function selectFromArrayWithBinary(array, binary) {
   return zip(array, binary)
@@ -50,11 +48,15 @@ function selectFromArrayWithBinary(array, binary) {
   .map(([element]) => element)
 }
 
-export function Component(props) {
-  const {
-    fullPalette, separation, density, strokeWidth, binaryFilter
-  } = config; 
-
+export function Component({
+  height,
+  width,
+  fullPalette,
+  separation,
+  density,
+  strokeWidth,
+  binaryFilter
+}) {
   const palettes = shuffle(range(Math.pow(2, fullPalette.length)))
     .map(n => toBinary(n, fullPalette.length))
     .filter(binaryFilter)
@@ -62,8 +64,6 @@ export function Component(props) {
   
   const sections = palettes.length;
   const subsections =  Math.round(width / sections / separation);
-
-  console.table({sections, subsections, total: sections*subsections});
 
   return palettes.flatMap((palette, i) => {
       return shuffle(range(subsections)).map((colorOrder, j) => {

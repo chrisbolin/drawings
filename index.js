@@ -13,7 +13,7 @@ import * as drawingG from "./drawings/drawingG.mjs";
 import * as drawingH from "./drawings/drawingH.mjs";
 import * as drawingI from "./drawings/drawingI.mjs";
 
-const drawing = drawingH;
+const drawing = drawingF;
 
 const appStyle = {
   backgroundColor: 'lightgrey',
