@@ -3,17 +3,17 @@ import { groupReduce } from "./utils/core.mjs";
 import context from "./utils/context.mjs";
 
 import * as drawingTemplate from "./drawings/drawing.mjs";
-import * as drawingA from "./drawings/drawingA.mjs";
-import * as drawingB from "./drawings/drawingB.mjs";
-import * as drawingC from "./drawings/drawingC.mjs";
-import * as drawingD from "./drawings/drawingD.mjs";
-import * as drawingE from "./drawings/drawingE.mjs";
-import * as drawingF from "./drawings/drawingF.mjs";
-import * as drawingG from "./drawings/drawingG.mjs";
-import * as drawingH from "./drawings/drawingH.mjs";
-import * as drawingI from "./drawings/drawingI.mjs";
+import drawingA from "./drawings/drawingA.mjs";
+// import drawingB from "./drawings/drawingB.mjs";
+// import drawingC from "./drawings/drawingC.mjs";
+// import drawingD from "./drawings/drawingD.mjs";
+// import drawingE from "./drawings/drawingE.mjs";
+// import drawingF from "./drawings/drawingF.mjs";
+// import drawingG from "./drawings/drawingG.mjs";
+import drawingH from "./drawings/drawingH.mjs";
+// import drawingI from "./drawings/drawingI.mjs";
 
-const drawing = drawingF;
+const drawing = drawingA;
 
 const appStyle = {
   backgroundColor: 'lightgrey',
@@ -103,15 +103,8 @@ function SVG({ width, height, children }) {
   `;
 }
 
-function LegacyWrapper({ drawing }) {
-  return react`
-    <${SVG} width=${drawing.width} height=${drawing.height}>
-      <${drawing.Component}/>
-    </${SVG}>
-  `;
-}
-
-function DefaultWrapper({ drawing }) {
+function Wrapper({ drawing }) {
+  console.log(drawing);
   const variant = drawing.variants[drawing.variants.length - 1];
   const settings = variant();
   return react`
@@ -126,11 +119,10 @@ function DefaultWrapper({ drawing }) {
 function App() {
   const [counter, setCounter] = React.useState(0);
   const refreshApp = () => setCounter(counter + 1);
-  const Wrapper = drawing.wrapper ? DefaultWrapper : LegacyWrapper;
   return react`
     <div style=${appStyle}>
       <${Wrapper} drawing=${drawing} />
-      <${Menu} refreshApp=${refreshApp}/>
+      <${Menu} refreshApp=${refreshApp} drawing=${drawing} />
     </div>
   `
 }

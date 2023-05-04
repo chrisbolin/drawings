@@ -2,13 +2,12 @@ import { react } from "../utils/react.mjs";
 import { FillingLine, NONE_STROKE } from "../utils/lines.mjs";
 import { range } from "../utils/core.mjs";
 import { dispearse } from "../utils/random.mjs";
+import wrap from "../utils/wrap.mjs";
 
 const height = 4;
 const width = 6;
 
-export const wrapper = true;
-
-export const variants = [
+const variants = [
   function f013() {
     const strokeWidth = 1/45;
     return {
@@ -92,3 +91,5 @@ export function Component({
     return lines;
   });
 }
+
+export default wrap({variants, Component}, {});

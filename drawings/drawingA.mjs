@@ -3,6 +3,12 @@ import { react } from "../utils/react.mjs";
 import { CenteredLine } from "../utils/lines.mjs";
 import { uniformSum, uniform } from "../utils/random.mjs";
 import { range } from "../utils/core.mjs";
+import wrap from "../utils/wrap.mjs";
+
+const defaults = {
+  height: 400,
+  width: 400,
+};
 
 function RandomLine({length, xMax, yMax, progress, randomSumCount, ...otherProps}) {
   const center = [
@@ -22,10 +28,7 @@ function RandomLine({length, xMax, yMax, progress, randomSumCount, ...otherProps
   })
 }
 
-export const height = 400;
-export const width = 400;
-
-export function Component(props) {
+function Component({height, width}) {
   const lineLength = 200;
   const lineCount = 50;
   const randomSumCount = 3;
@@ -48,3 +51,8 @@ export function Component(props) {
       ${rendered}
   `;
 }
+
+export default wrap({
+  Component,
+  defaults
+}, import.meta);
