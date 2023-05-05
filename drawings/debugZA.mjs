@@ -1,31 +1,33 @@
 import { range, roundTo, sum, toBinary, zip } from "../utils/core.mjs";
 import { CenteredLine } from "../utils/lines.mjs";
 import { react } from "../utils/react.mjs";
+import wrap from "../utils/wrap.mjs";
 
-export const width = 5.5;
-export const height = 3.5;
+const defaults = {
+  width: 5.5,
+  height: 3.5,
+};
 
-const linesPerGroup = 3;
+function Component({width, height}) {
+  const linesPerGroup = 3;
 
-const distances = [
-  1/64,
-  1/50,
-  1/40,
-  1/32,
-  1/24,
-  1/20,
-  1/16,
-  1/10,
-  1/8,
-  1/4,
-];
+  const distances = [
+    1/64,
+    1/50,
+    1/40,
+    1/32,
+    1/24,
+    1/20,
+    1/16,
+    1/10,
+    1/8,
+    1/4,
+  ];
 
-const strokeWidth = 1/64;
-
-const length = 1;
-
-export function Component(props) {
+  const strokeWidth = 1/64;
+  const length = 1;
   const groupLength = width/distances.length;
+
   return distances.flatMap((distance, i) => {
       const xStart = i * groupLength;
       const lines = range(linesPerGroup).map(j => {
@@ -46,3 +48,7 @@ export function Component(props) {
       return lines;
     })
 }
+
+export default wrap({
+  Component, defaults
+});

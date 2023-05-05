@@ -2,7 +2,6 @@ import { React, react, ReactDOM } from "./utils/react.mjs";
 import { groupReduce } from "./utils/core.mjs";
 import context from "./utils/context.mjs";
 
-import * as drawingTemplate from "./drawings/drawing.mjs";
 import drawingA from "./drawings/drawingA.mjs";
 import drawingB from "./drawings/drawingB.mjs";
 import drawingC from "./drawings/drawingC.mjs";
@@ -12,8 +11,9 @@ import drawingF from "./drawings/drawingF.mjs";
 import drawingG from "./drawings/drawingG.mjs";
 import drawingH from "./drawings/drawingH.mjs";
 import drawingI from "./drawings/drawingI.mjs";
+import debugZA from "./drawings/debugZA.mjs";
 
-const drawing = drawingI;
+const drawing = debugZA;
 
 let DEBUG = false;
 // DEBUG = true;
