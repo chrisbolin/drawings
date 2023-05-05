@@ -1,6 +1,6 @@
-import React from "https://unpkg.com/es-react@latest/dev/react.js";
-import ReactDOM from "https://unpkg.com/es-react@latest/dev/react-dom.js";
-import htm from "https://unpkg.com/htm@latest?module";
+import React from "../external/es-react/react.js";
+import ReactDOM from "../external/es-react/react-dom.js";
+import htm from "../external/htm.module.js";
 
 const react = htm.bind(React.createElement);
 
