@@ -1,19 +1,9 @@
 import { React, react, ReactDOM } from "./utils/react.mjs";
 import { groupReduce } from "./utils/core.mjs";
 import context from "./utils/context.mjs";
+import drawings from "./drawings/drawings.js";
 
-import drawingA from "./drawings/drawingA.mjs";
-import drawingB from "./drawings/drawingB.mjs";
-import drawingC from "./drawings/drawingC.mjs";
-import drawingD from "./drawings/drawingD.mjs";
-import drawingE from "./drawings/drawingE.mjs";
-import drawingF from "./drawings/drawingF.mjs";
-import drawingG from "./drawings/drawingG.mjs";
-import drawingH from "./drawings/drawingH.mjs";
-import drawingI from "./drawings/drawingI.mjs";
-import debugZA from "./drawings/debugZA.mjs";
-
-const drawing = debugZA;
+const drawing = drawings[0];
 
 let DEBUG = false;
 // DEBUG = true;
