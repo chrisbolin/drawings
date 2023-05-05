@@ -13,7 +13,7 @@ import drawingA from "./drawings/drawingA.mjs";
 import drawingH from "./drawings/drawingH.mjs";
 // import drawingI from "./drawings/drawingI.mjs";
 
-const drawing = drawingA;
+const drawing = drawingH;
 
 const appStyle = {
   backgroundColor: 'lightgrey',
@@ -104,7 +104,6 @@ function SVG({ width, height, children }) {
 }
 
 function Wrapper({ drawing }) {
-  console.log(drawing);
   const variant = drawing.variants[drawing.variants.length - 1];
   const settings = variant();
   return react`
