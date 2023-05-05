@@ -2,13 +2,11 @@ import { range } from "../utils/core.mjs";
 import { FillingLine } from "../utils/lines.mjs";
 import { uniformSum } from "../utils/random.mjs";
 import { react } from "../utils/react.mjs";
+import wrap from "../utils/wrap.mjs";
 
-export const name = "I";
-export const wrapper = true;
-
-export const variants = [
-  function f1() {
-    return   {
+const variants = [
+  () => {
+    return {
       height: 3.5,
       width: 5.5,
       strokeWidth: 1/100,
@@ -20,7 +18,7 @@ function toRadians(degrees) {
   return degrees / 180 * Math.PI;
 }
 
-export function Component({ height, width }) {
+export function Component({ height, width, strokeWidth }) {
   const min = 0;
   const max = 3;
   const lines = 100;
@@ -41,3 +39,8 @@ export function Component({ height, width }) {
       `;
   })});
 }
+
+export default wrap({
+  Component,
+  variants
+});

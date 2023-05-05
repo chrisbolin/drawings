@@ -2,14 +2,16 @@ import { range, roundTo, sum, toBinary, zip } from "../utils/core.mjs";
 import { CenteredLine } from "../utils/lines.mjs";
 import { shuffle, uniform } from "../utils/random.mjs";
 import { react } from "../utils/react.mjs";
+import wrap from "../utils/wrap.mjs";
 
-export const wrapper = true;
+const defaults = {
+  width: 5.5,
+  height: 3.5,
+};
 
-export const variants = [
+const variants = [
   function f009() {
     return {
-      width: 5.5,
-      height: 3.5,
       density: 1, 
       strokeWidth: 1/64,
       separation: 1/64,
@@ -24,8 +26,6 @@ export const variants = [
   },
   function f010() {
     return {
-      width: 5.5,
-      height: 3.5,
       density: 1, 
       strokeWidth: 1/50,
       separation: 1/50,
@@ -48,7 +48,7 @@ function selectFromArrayWithBinary(array, binary) {
   .map(([element]) => element)
 }
 
-export function Component({
+function Component({
   height,
   width,
   fullPalette,
@@ -89,3 +89,9 @@ export function Component({
     ).sort((a, b) => b.sortkey > a.sortkey)
     .map(item => item.rendered)
 }
+
+export default wrap({
+  Component,
+  defaults,
+  variants,
+});

@@ -2,56 +2,57 @@ import { combinations, groupReduce, range } from "../utils/core.mjs";
 import { FillingLine, CenteredLine } from "../utils/lines.mjs";
 import { sample, uniform } from "../utils/random.mjs";
 import { react } from "../utils/react.mjs";
+import wrap from "../utils/wrap.mjs";
 
-export const height = 4;
-export const width = 6;
 
-function $011g(){
-  return {
-    fullPalette: [
-      'red',
-      'blue',
-      'yellow',
-      'purple',
-      'orange',
-      'green',
-    ],
-    startK: 1,
+const defaults = {
+  height: 4,
+  width: 6,
+};
+
+const variants = [
+  function $011g(){
+    return {
+      fullPalette: [
+        'red',
+        'blue',
+        'yellow',
+        'purple',
+        'orange',
+        'green',
+      ],
+      startK: 1,
+    }
+  },
+  function $012g(){
+    return {
+      fullPalette: [
+        'red',
+        'blue',
+        'yellow',
+        'purple',
+        'orange',
+        'green',
+      ],
+      startK: 2,
+    }
+  }, 
+  function $013g(){
+    return {
+      fullPalette: [
+        'blue',
+        'red',
+        'orange',
+        'gold',
+      ],
+      startK: 2,
+    }
   }
-}
+];
 
-function $012g(){
-  return {
-    fullPalette: [
-      'red',
-      'blue',
-      'yellow',
-      'purple',
-      'orange',
-      'green',
-    ],
-    startK: 2,
-  }
-}
 
-function $013g(){
-  return {
-    fullPalette: [
-      'blue',
-      'red',
-      'orange',
-      'gold',
-    ],
-    startK: 2,
-  }
-}
-
-const config = $012g();
-
-const strokeWidth = 1/45;
-
-export function Component(props) {
-  const { fullPalette, startK } = config;
+function Component({ fullPalette, startK, width, height }) {
+  const strokeWidth = 1/45;
   const sections = fullPalette.length + 1 - startK;
   const sectionWidth = width / sections; 
   const groups = range(sections).flatMap((iSection) => {
@@ -96,3 +97,9 @@ export function Component(props) {
       </g>`;
     });
 }
+
+export default wrap({
+  Component,
+  defaults,
+  variants,
+});

@@ -7,13 +7,13 @@ import drawingA from "./drawings/drawingA.mjs";
 import drawingB from "./drawings/drawingB.mjs";
 import drawingC from "./drawings/drawingC.mjs";
 import drawingD from "./drawings/drawingD.mjs";
-// import drawingE from "./drawings/drawingE.mjs";
-// import drawingF from "./drawings/drawingF.mjs";
-// import drawingG from "./drawings/drawingG.mjs";
+import drawingE from "./drawings/drawingE.mjs";
+import drawingF from "./drawings/drawingF.mjs";
+import drawingG from "./drawings/drawingG.mjs";
 import drawingH from "./drawings/drawingH.mjs";
-// import drawingI from "./drawings/drawingI.mjs";
+import drawingI from "./drawings/drawingI.mjs";
 
-const drawing = drawingD;
+const drawing = drawingI;
 
 let DEBUG = false;
 // DEBUG = true;
