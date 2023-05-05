@@ -12,13 +12,20 @@ function drawingID() {
   return callingFile().match(/([A-Z]+)\.mjs/)[1];
 }
 
-export default function wrap({ Component, variants, defaults }, meta) {
+export default function wrap({ Component, variants, defaults }) {
   if (!Component) throw new Error('wrap() must be called with Component');
-  if (!meta) throw new Error('wrap() last argument must be an import.meta');
   if (!variants && !defaults) throw new Error('wrap() must be called with variants or default');
   
   if (!variants) {
     variants = [() => defaults];
+  } else {
+    defaults = defaults || {};
+    variants = variants.map(variant => x => {
+      return {
+        ...defaults,
+        ...variant(x)
+      };
+    });
   }
   
   return {

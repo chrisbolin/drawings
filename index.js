@@ -4,8 +4,8 @@ import context from "./utils/context.mjs";
 
 import * as drawingTemplate from "./drawings/drawing.mjs";
 import drawingA from "./drawings/drawingA.mjs";
-// import drawingB from "./drawings/drawingB.mjs";
-// import drawingC from "./drawings/drawingC.mjs";
+import drawingB from "./drawings/drawingB.mjs";
+import drawingC from "./drawings/drawingC.mjs";
 // import drawingD from "./drawings/drawingD.mjs";
 // import drawingE from "./drawings/drawingE.mjs";
 // import drawingF from "./drawings/drawingF.mjs";
@@ -13,7 +13,15 @@ import drawingA from "./drawings/drawingA.mjs";
 import drawingH from "./drawings/drawingH.mjs";
 // import drawingI from "./drawings/drawingI.mjs";
 
-const drawing = drawingH;
+const drawing = drawingC;
+
+const DEBUG = true;
+
+const debugLog = (...items) => {
+  if (DEBUG) {
+    console.log(...items);
+  }
+}
 
 const appStyle = {
   backgroundColor: 'lightgrey',
@@ -104,12 +112,13 @@ function SVG({ width, height, children }) {
 }
 
 function Wrapper({ drawing }) {
-  const variant = drawing.variants[drawing.variants.length - 1];
-  const settings = variant();
+  const variantF = drawing.variants[drawing.variants.length - 1];
+  const variant = variantF();
+  debugLog(variant);
   return react`
-    <${context.Provider} value=${settings}>
-      <${SVG} width=${settings.width} height=${settings.height}>
-      <${drawing.Component} ...${settings}/>
+    <${context.Provider} value=${variant}>
+      <${SVG} width=${variant.width} height=${variant.height}>
+      <${drawing.Component} ...${variant}/>
       </${SVG}>
     </${context.Provider}>
   `;

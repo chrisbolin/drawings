@@ -1,5 +1,6 @@
 import { range } from "../utils/core.mjs";
 import { react } from "../utils/react.mjs";
+import wrap from "../utils/wrap.mjs";
 
 function centerOfMass(points) {
   const n = points.length;
@@ -15,10 +16,12 @@ function centerPoints(points, centerX, centerY) {
   return points.map(([x, y]) => [x + dX, y + dY]);
 }
 
-export const width = 400;
-export const height = 400;
+const defaults = {
+  width: 400,
+  height: 400,
+};
 
-export function Component(){
+function Component({ height, width }){
   const sideLength = 40;
   const points = range(7)
     .map(i => -i * 2 * Math.PI / 7) // angles
@@ -41,3 +44,8 @@ export function Component(){
     fill="none" stroke="black"
   />`
 }
+
+export default wrap({
+  Component,
+  defaults
+});

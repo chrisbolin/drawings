@@ -55,4 +55,4 @@ function Component({height, width}) {
 export default wrap({
   Component,
   defaults
-}, import.meta);
+});
