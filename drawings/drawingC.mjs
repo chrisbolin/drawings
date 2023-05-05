@@ -3,13 +3,12 @@ import { FillingLine } from "../utils/lines.mjs";
 import { react } from "../utils/react.mjs";
 import wrap from "../utils/wrap.mjs";
 
-
 const defaults = {
   width: 600,
   height: 400,
 };
 
-(i) => {
+(i) => {   // 005
   const x = 300 + i;
   const y = 50 + i*4;
   const angle = i + i*i/30;
@@ -19,7 +18,7 @@ const defaults = {
   };
 }
 
-(i) => {
+(i) => { // 006
   const x = 600;
   const y = 50 + i*4 + i*i/10;
   const angle = i < 30 ? (180 + i/2) : i;
@@ -31,7 +30,7 @@ const defaults = {
 
 const variants = [
   () => ({
-    mapper: (i) => {
+    mapper: (i) => { // 
       const j = i + 30;
       const x = j + 40;
       const y = x + 100;
@@ -40,7 +39,8 @@ const variants = [
         center: [x, y],
         angle
       };
-    }
+    },
+    number: 4,
   }),
 ];
 

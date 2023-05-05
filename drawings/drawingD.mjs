@@ -2,11 +2,14 @@ import { range } from "../utils/core.mjs";
 import { FillingLine } from "../utils/lines.mjs";
 import { uniform } from "../utils/random.mjs";
 import { react } from "../utils/react.mjs";
+import wrap from "../utils/wrap.mjs";
 
-export const width = 600;
-export const height = 400;
+const defaults = {
+  width: 600,
+  height: 400,
+};
 
-export function Component(){
+function Component({width, height}){
   const lineCount = 71;
   let x = uniform(500, 800, 1);
   let y0 = uniform(50, 200, 1);
@@ -37,3 +40,8 @@ export function Component(){
         />`)
     ;
 }
+
+export default wrap({
+  Component,
+  defaults
+});

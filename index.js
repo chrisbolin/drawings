@@ -6,16 +6,17 @@ import * as drawingTemplate from "./drawings/drawing.mjs";
 import drawingA from "./drawings/drawingA.mjs";
 import drawingB from "./drawings/drawingB.mjs";
 import drawingC from "./drawings/drawingC.mjs";
-// import drawingD from "./drawings/drawingD.mjs";
+import drawingD from "./drawings/drawingD.mjs";
 // import drawingE from "./drawings/drawingE.mjs";
 // import drawingF from "./drawings/drawingF.mjs";
 // import drawingG from "./drawings/drawingG.mjs";
 import drawingH from "./drawings/drawingH.mjs";
 // import drawingI from "./drawings/drawingI.mjs";
 
-const drawing = drawingC;
+const drawing = drawingD;
 
-const DEBUG = true;
+let DEBUG = false;
+// DEBUG = true;
 
 const debugLog = (...items) => {
   if (DEBUG) {
