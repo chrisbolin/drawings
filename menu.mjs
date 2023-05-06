@@ -61,7 +61,18 @@ export default function Menu({
       <div><a onClick=${refreshApp} href="#">refresh</a></div>
       <div><a onClick=${launchDownload} href="#">download</a></div>
       ${
-        activeDrawing.variants.map((variant, i) => react`
+        drawings.map((drawing, i) => react`
+        <${MenuItem}
+        key=${i}
+        text="drawing ${drawing.name}"
+        active=${i !== drawingIndex}
+        onClick=${() => setDrawingIndex(i)}
+        />
+        `)
+      }
+      ${
+        activeDrawing.variants.length > 1
+        && activeDrawing.variants.map((variant, i) => react`
           <${MenuItem}
             key=${i}
             text="variant ${i}"
@@ -70,17 +81,7 @@ export default function Menu({
             />
         `)
       }
-      ${
-        drawings.map((drawing, i) => react`
-          <${MenuItem}
-            key=${i}
-            text="drawing ${drawing.name}"
-            active=${i !== drawingIndex}
-            onClick=${() => setDrawingIndex(i)}
-            />
-        `)
-      }
-    </div>
+      </div>
   </div>
   `
 }
