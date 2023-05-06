@@ -8,7 +8,7 @@ function callingFile(){
     .filter(filename => filename !== thisFile)[0];
 }
 
-function drawingID() {
+function drawingName() {
   return callingFile().match(/([A-Z]+)\.mjs/)[1];
 }
 
@@ -29,7 +29,7 @@ export default function wrap({ Component, variants, defaults }) {
   }
   
   return {
-    id: drawingID(),
+    name: drawingName(),
     Component,
     variants
   };

@@ -2,8 +2,7 @@ import { React, react, ReactDOM } from "./utils/react.mjs";
 import { groupReduce } from "./utils/core.mjs";
 import context from "./utils/context.mjs";
 import drawings from "./drawings/drawings.js";
-
-const drawing = drawings[0];
+import Menu from "./menu.mjs";
 
 let DEBUG = false;
 // DEBUG = true;
@@ -32,54 +31,6 @@ const svgStyle = {
   boxSizing: 'border-box'
 };
 
-function launchDownload() {
-  const svgXML = document.getElementById('mainDrawing').outerHTML;
-  // Construct the <a> element
-  var link = document.createElement("a");
-  link.download = 'download.svg';
-  // Construct the uri
-  var uri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgXML)
-  link.href = uri;
-  document.body.appendChild(link);
-  link.click();
-  // Cleanup the DOM
-  document.body.removeChild(link);
-}
-
-function Menu({refreshApp}) {
-  const [menuShown, setMenuShown] = React.useState(true);
-  
-  function toggleMenu() { setMenuShown(!menuShown); }
-  const menuToggleStyle = {
-    position: 'fixed',
-    top: '0',
-    right: '0',
-    width: '3vw',
-    height: '3vh',
-    zIndex: 1,
-    cursor: 'pointer'
-  }
-  const menuStyle = {
-    backgroundColor: 'white',
-    padding: '25px',
-    border: '1px dashed black',
-    position: 'fixed',
-    top: '3vw',
-    right: '3vh',
-    zIndex: 1,
-    lineHeight: 2,
-    display: menuShown ? 'block' : 'none'
-  };
-  return react`<div>
-    <div style=${menuToggleStyle} onClick=${toggleMenu} />
-    <div style=${menuStyle}>
-      <div><a onClick=${refreshApp} href="#">refresh</a></div>
-      <div><a onClick=${launchDownload} href="#">download</a></div>
-    </div>
-  </div>
-  `
-}
-
 function groupByStroke(renderedElements) {
   if (!renderedElements.length) return renderedElements;
   return Object.entries(
@@ -102,14 +53,13 @@ function SVG({ width, height, children }) {
   `;
 }
 
-function Wrapper({ drawing }) {
-  const variantF = drawing.variants[drawing.variants.length - 1];
-  const variant = variantF();
-  debugLog(variant);
+function Wrapper({ drawing, variant }) {;
+  const v = variant();
+  debugLog(v);
   return react`
-    <${context.Provider} value=${variant}>
-      <${SVG} width=${variant.width} height=${variant.height}>
-      <${drawing.Component} ...${variant}/>
+    <${context.Provider} value=${v}>
+      <${SVG} width=${v.width} height=${v.height}>
+      <${drawing.Component} ...${v}/>
       </${SVG}>
     </${context.Provider}>
   `;
@@ -117,11 +67,28 @@ function Wrapper({ drawing }) {
 
 function App() {
   const [counter, setCounter] = React.useState(0);
+  const [drawingIndex, _setDrawingIndex] = React.useState(0);
+  const [variantIndex, setVariantIndex] = React.useState(0);
   const refreshApp = () => setCounter(counter + 1);
+  const setDrawingIndex = i => {
+    setVariantIndex(0); // always zero out variants
+    _setDrawingIndex(i);
+  };
+
+  const drawing = drawings[drawingIndex];
+  const variant = drawing.variants[variantIndex];
+
   return react`
     <div style=${appStyle}>
-      <${Wrapper} drawing=${drawing} />
-      <${Menu} refreshApp=${refreshApp} drawing=${drawing} />
+      <${Wrapper} drawing=${drawing} variant=${variant}/>
+      <${Menu}
+        refreshApp=${refreshApp}
+        drawings=${drawings}
+        drawingIndex=${drawingIndex}
+        setDrawingIndex=${setDrawingIndex}
+        variantIndex=${variantIndex}
+        setVariantIndex=${setVariantIndex}
+      />
     </div>
   `
 }
