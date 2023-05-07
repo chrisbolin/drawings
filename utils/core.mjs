@@ -98,3 +98,7 @@ export function combinations(array, k) {
     );
   })
 }
+
+export function toRadians(degrees) {
+  return degrees / 180 * Math.PI;
+}

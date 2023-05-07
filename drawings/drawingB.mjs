@@ -1,20 +1,7 @@
 import { range } from "../utils/core.mjs";
+import { Polyline } from "../utils/lines.mjs";
 import { react } from "../utils/react.mjs";
 import wrap from "../utils/wrap.mjs";
-
-function centerOfMass(points) {
-  const n = points.length;
-  const [sumX, sumY] = points.reduce(
-    (sum, point, i) => [sum[0] + point[0], sum[1] + point[1]],
-    [0, 0]);
-  return [sumX / n, sumY / n];
-}
-
-function centerPoints(points, centerX, centerY) {
-  const [massX, massY] = centerOfMass(points);
-  const [dX, dY] = [centerX - massX, centerY - massY];
-  return points.map(([x, y]) => [x + dX, y + dY]);
-}
 
 const defaults = {
   width: 400,
@@ -37,12 +24,12 @@ function Component({ height, width }){
       return acc;
     }, [[100, 100]]);
 
-  const centeredPoints = centerPoints(points, width/2, height/2);
-  const pointsString = centeredPoints.map(p => p.toString()).join(' ');
-  return react`<polyline
-    points="${pointsString}"
-    fill="none" stroke="black"
-  />`
+  return react`<${Polyline}
+    points="${points}"
+    stroke="black"
+    centerX=${width/2}
+    centerY=${height/2}
+  />`;
 }
 
 export default wrap({

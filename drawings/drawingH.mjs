@@ -4,8 +4,10 @@ import { range } from "../utils/core.mjs";
 import { dispearse } from "../utils/random.mjs";
 import wrap from "../utils/wrap.mjs";
 
-const height = 4;
-const width = 6;
+const defaults = {
+  width: 6,
+  height: 4,
+};
 
 const variants = [
   function f013() {
@@ -21,8 +23,6 @@ const variants = [
       endMargin: strokeWidth,
       sections: 30,
       strength: section => 4 + 1.2 * section,
-      height,
-      width
     };
   },
   function f015() {
@@ -38,8 +38,6 @@ const variants = [
       endMargin: strokeWidth,
       sections: 30,
       strength: section => 4 + 2 * section,
-      height,
-      width
     };
   },
   function f016() {
@@ -55,8 +53,6 @@ const variants = [
       endMargin: 0,
       sections: 30,
       strength: section => 4 + 1.3 * section,
-      height,
-      width
     };
   }
 ];
@@ -92,4 +88,8 @@ export function Component({
   });
 }
 
-export default wrap({variants, Component}, {});
+export default wrap({
+  variants,
+  defaults,
+  Component
+});

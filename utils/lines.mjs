@@ -53,3 +53,37 @@ export function FillingLine({center, angle, xBounds, yBounds, strokeWidth, strok
     strokeWidth="${strokeWidth}"
   />`;
 }
+
+function centerOfMass(points) {
+  const n = points.length;
+  const [sumX, sumY] = points.reduce(
+    (sum, point, i) => [sum[0] + point[0], sum[1] + point[1]],
+    [0, 0]);
+  return [sumX / n, sumY / n];
+}
+
+function centerPoints(points, centerX, centerY) {
+  const [massX, massY] = centerOfMass(points);
+  const [dX, dY] = [centerX - massX, centerY - massY];
+  return points.map(([x, y]) => [x + dX, y + dY]);
+}
+
+export function Polyline({
+  points = [[]],
+  stroke = 'black',
+  strokeWidth = 1,
+  centerX,
+  centerY
+}) {
+  const _points = (!isNaN(centerX) && !isNaN(centerY)) ?
+    centerPoints(points, centerX, centerY)
+    : points;
+
+  const pointsString = _points.map(p => p.toString()).join(' ');
+  return react`<polyline
+    points="${pointsString}"
+    fill="none"
+    stroke=${stroke}
+    strokeWidth=${strokeWidth}
+  />`
+}

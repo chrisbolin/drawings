@@ -1,4 +1,4 @@
-import { range } from "../utils/core.mjs";
+import { range, toRadians } from "../utils/core.mjs";
 import { FillingLine } from "../utils/lines.mjs";
 import { uniformSum } from "../utils/random.mjs";
 import { react } from "../utils/react.mjs";
@@ -13,10 +13,6 @@ const variants = [
     }
   }
 ];
-
-function toRadians(degrees) {
-  return degrees / 180 * Math.PI;
-}
 
 export function Component({ height, width, strokeWidth }) {
   const min = 0;

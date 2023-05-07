@@ -23,7 +23,10 @@ export default function wrap({ Component, variants, defaults }) {
     variants = variants.map(variant => x => {
       return {
         ...defaults,
-        ...variant(x)
+        ...variant({ // send input and defaults to variant function
+          ...defaults,
+          ...x,
+        })
       };
     });
   }

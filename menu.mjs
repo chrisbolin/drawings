@@ -14,8 +14,8 @@ function launchDownload() {
   document.body.removeChild(link);
 }
 
-function A({href='#', ...otherProps}) {
-  return react`<a href="#" ...${otherProps}/>`;
+function A(props) {
+  return react`<a href="${location.href}" ...${props}/>`;
 }
 
 const menuToggleStyle = {
