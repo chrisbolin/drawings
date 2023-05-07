@@ -1,4 +1,4 @@
-import { Polyline } from "../lib/lines.mjs";
+import { Polyline, centerPoints } from "../lib/lines.mjs";
 import { uniform } from "../lib/random.mjs";
 import { react } from "../lib/react.mjs";
 import vector from "../lib/vector.mjs";
@@ -29,7 +29,7 @@ const variants = [
     return {
       initialPoint: [width/2, height/2],
       nextPoint,
-      n: 250,
+      n: 2500,
     };
   },
 ];
@@ -38,13 +38,16 @@ export function Component({
   strokeWidth,
   initialPoint,
   nextPoint,
+  width,
+  height,
   n
 }) {
   const points = [initialPoint];
   for (let i = 0; i < n; i++) {
     points.push(nextPoint(points[points.length - 1], i));
   }
-  return react`<${Polyline} points=${points} strokeWidth=${strokeWidth}/>`
+
+  return react`<${Polyline} points=${centerPoints(points, [width/2, height/2])} strokeWidth=${strokeWidth} cen/>`
 }
 
 export default wrap({

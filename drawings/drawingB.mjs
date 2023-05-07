@@ -27,8 +27,7 @@ function Component({ height, width }){
   return react`<${Polyline}
     points="${points}"
     stroke="black"
-    centerX=${width/2}
-    centerY=${height/2}
+    center=${[width/2, height/2]}
   />`;
 }
 
