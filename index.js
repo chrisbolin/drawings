@@ -3,6 +3,7 @@ import { groupReduce } from "./lib/core.mjs";
 import context from "./lib/context.mjs";
 import drawings from "./drawings/drawings.js";
 import Menu from "./lib/menu.mjs";
+import { getIndexes, listen } from "./lib/navigator.mjs";
 
 let DEBUG = false;
 // DEBUG = true;
@@ -18,6 +19,7 @@ const appStyle = {
   width: '100vw',
   height: '100vh',
   fontFamily: 'monospace',
+  filter: 'invert()',
 };
 const svgStyle = {
   // border: '20px solid black',
@@ -66,14 +68,18 @@ function Wrapper({ drawing, variant }) {;
 }
 
 function App() {
+  const initialIndexes = getIndexes() || {drawingIndex: 0, variantIndex: 0};
   const [counter, setCounter] = React.useState(0);
-  const [drawingIndex, _setDrawingIndex] = React.useState(0);
-  const [variantIndex, setVariantIndex] = React.useState(0);
+  const [drawingIndex, setDrawingIndex] = React.useState(initialIndexes.drawingIndex);
+  const [variantIndex, setVariantIndex] = React.useState(initialIndexes.variantIndex);
   const refreshApp = () => setCounter(counter + 1);
-  const setDrawingIndex = i => {
-    setVariantIndex(0); // always zero out variants
-    _setDrawingIndex(i);
-  };
+
+  React.useEffect(() => {
+    listen(indexes => {
+      setDrawingIndex(indexes.drawingIndex);
+      setVariantIndex(indexes.variantIndex);
+    });
+  }, []);
 
   const drawing = drawings[drawingIndex];
   const variant = drawing.variants[variantIndex];
@@ -85,9 +91,7 @@ function App() {
         refreshApp=${refreshApp}
         drawings=${drawings}
         drawingIndex=${drawingIndex}
-        setDrawingIndex=${setDrawingIndex}
         variantIndex=${variantIndex}
-        setVariantIndex=${setVariantIndex}
       />
     </div>
   `

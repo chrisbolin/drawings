@@ -50,7 +50,6 @@ export function Component({
   for (let i = 0; i < depth; i++) {
     pointSets.push(nextPoints(pointSets[pointSets.length - 1]));
   }
-  console.log(pointSets);
   return pointSets.map((points, i) => react`
     <${Polyline} key=${i} points=${points} strokeWidth=${strokeWidth}/>
   `);

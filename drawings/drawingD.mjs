@@ -15,8 +15,6 @@ function Component({width, height}){
   let y0 = uniform(50, 200, 1);
   let angleDelta = uniform(1, 2.5, 0.1);
   const split = (lineCount / 3);
-  // x= 735, angleDelta= 1.1, y0= 187;
-  console.log( {x, angleDelta, y0} );
   return range(lineCount)
     // .filter(i => i > 40)
     .map(i => {
