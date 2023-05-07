@@ -1,8 +1,8 @@
-import { range, toRadians } from "../utils/core.mjs";
-import { Polyline } from "../utils/lines.mjs";
-import { react } from "../utils/react.mjs";
-import vector from "../utils/vector.mjs";
-import wrap from "../utils/wrap.mjs";
+import { range, toRadians } from "../lib/core.mjs";
+import { Polyline } from "../lib/lines.mjs";
+import { react } from "../lib/react.mjs";
+import vector from "../lib/vector.mjs";
+import wrap from "../lib/wrap.mjs";
 
 const defaults = {
   width: 6,

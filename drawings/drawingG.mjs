@@ -1,8 +1,8 @@
-import { combinations, groupReduce, range } from "../utils/core.mjs";
-import { FillingLine, CenteredLine } from "../utils/lines.mjs";
-import { sample, uniform } from "../utils/random.mjs";
-import { react } from "../utils/react.mjs";
-import wrap from "../utils/wrap.mjs";
+import { combinations, groupReduce, range } from "../lib/core.mjs";
+import { FillingLine, CenteredLine } from "../lib/lines.mjs";
+import { sample, uniform } from "../lib/random.mjs";
+import { react } from "../lib/react.mjs";
+import wrap from "../lib/wrap.mjs";
 
 
 const defaults = {

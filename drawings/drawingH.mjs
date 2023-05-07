@@ -1,8 +1,8 @@
-import { react } from "../utils/react.mjs";
-import { FillingLine, NONE_STROKE } from "../utils/lines.mjs";
-import { range } from "../utils/core.mjs";
-import { dispearse } from "../utils/random.mjs";
-import wrap from "../utils/wrap.mjs";
+import { react } from "../lib/react.mjs";
+import { FillingLine, NONE_STROKE } from "../lib/lines.mjs";
+import { range } from "../lib/core.mjs";
+import { dispearse } from "../lib/random.mjs";
+import wrap from "../lib/wrap.mjs";
 
 const defaults = {
   width: 6,

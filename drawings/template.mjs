@@ -1,5 +1,5 @@
-import { react } from "../utils/react.mjs";
-import wrap from "../utils/wrap.mjs";
+import { react } from "../lib/react.mjs";
+import wrap from "../lib/wrap.mjs";
 
 const defaults = {
   width: 100,

@@ -1,7 +1,7 @@
-import { range } from "../utils/core.mjs";
-import { FillingLine } from "../utils/lines.mjs";
-import { react } from "../utils/react.mjs";
-import wrap from "../utils/wrap.mjs";
+import { range } from "../lib/core.mjs";
+import { FillingLine } from "../lib/lines.mjs";
+import { react } from "../lib/react.mjs";
+import wrap from "../lib/wrap.mjs";
 
 const defaults = {
   width: 600,

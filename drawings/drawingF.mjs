@@ -1,8 +1,8 @@
-import { range, roundTo, sum, toBinary, zip } from "../utils/core.mjs";
-import { CenteredLine } from "../utils/lines.mjs";
-import { shuffle, uniform } from "../utils/random.mjs";
-import { react } from "../utils/react.mjs";
-import wrap from "../utils/wrap.mjs";
+import { range, roundTo, sum, toBinary, zip } from "../lib/core.mjs";
+import { CenteredLine } from "../lib/lines.mjs";
+import { shuffle, uniform } from "../lib/random.mjs";
+import { react } from "../lib/react.mjs";
+import wrap from "../lib/wrap.mjs";
 
 const defaults = {
   width: 5.5,

@@ -1,9 +1,9 @@
-import { react } from "../utils/react.mjs";
+import { react } from "../lib/react.mjs";
 
-import { CenteredLine } from "../utils/lines.mjs";
-import { uniformSum, uniform } from "../utils/random.mjs";
-import { range } from "../utils/core.mjs";
-import wrap from "../utils/wrap.mjs";
+import { CenteredLine } from "../lib/lines.mjs";
+import { uniformSum, uniform } from "../lib/random.mjs";
+import { range } from "../lib/core.mjs";
+import wrap from "../lib/wrap.mjs";
 
 const defaults = {
   height: 400,

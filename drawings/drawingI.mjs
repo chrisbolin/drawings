@@ -1,8 +1,8 @@
-import { range, toRadians } from "../utils/core.mjs";
-import { FillingLine } from "../utils/lines.mjs";
-import { uniformSum } from "../utils/random.mjs";
-import { react } from "../utils/react.mjs";
-import wrap from "../utils/wrap.mjs";
+import { range, toRadians } from "../lib/core.mjs";
+import { FillingLine } from "../lib/lines.mjs";
+import { uniformSum } from "../lib/random.mjs";
+import { react } from "../lib/react.mjs";
+import wrap from "../lib/wrap.mjs";
 
 const variants = [
   () => {

@@ -1,4 +1,4 @@
-import { React, react } from "./utils/react.mjs";
+import { React, react } from "./lib/react.mjs";
 
 function launchDownload() {
   const svgXML = document.getElementById('mainDrawing').outerHTML;
