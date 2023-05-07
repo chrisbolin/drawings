@@ -14,13 +14,13 @@ const debugLog = (...items) => {
   }
 }
 
-const appStyle = {
+const appStyle = ({invertedColors = false}) => ({
   backgroundColor: 'lightgrey',
   width: '100vw',
   height: '100vh',
   fontFamily: 'monospace',
-  filter: 'invert()',
-};
+  filter: invertedColors ? 'invert()' : 'none',
+});
 const svgStyle = {
   // border: '20px solid black',
   backgroundColor: 'white',
@@ -61,18 +61,25 @@ function Wrapper({ drawing, variant }) {;
   return react`
     <${context.Provider} value=${v}>
       <${SVG} width=${v.width} height=${v.height}>
-      <${drawing.Component} ...${v}/>
+        <${drawing.Component} ...${v}/>
       </${SVG}>
     </${context.Provider}>
   `;
 }
 
+function prefersDarkMode() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
 function App() {
   const initialIndexes = getIndexes() || {drawingIndex: 0, variantIndex: 0};
   const [counter, setCounter] = React.useState(0);
+  const [invertedColors, setInvertedColors] = React.useState(prefersDarkMode());
   const [drawingIndex, setDrawingIndex] = React.useState(initialIndexes.drawingIndex);
   const [variantIndex, setVariantIndex] = React.useState(initialIndexes.variantIndex);
+
   const refreshApp = () => setCounter(counter + 1);
+  const invertColors = () => setInvertedColors(!invertedColors);
 
   React.useEffect(() => {
     listen(indexes => {
@@ -85,10 +92,11 @@ function App() {
   const variant = drawing.variants[variantIndex];
 
   return react`
-    <div style=${appStyle}>
+    <div style=${appStyle({ invertedColors })}>
       <${Wrapper} drawing=${drawing} variant=${variant}/>
       <${Menu}
         refreshApp=${refreshApp}
+        invertColors=${invertColors}
         drawings=${drawings}
         drawingIndex=${drawingIndex}
         variantIndex=${variantIndex}
