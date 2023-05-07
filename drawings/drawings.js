@@ -8,6 +8,7 @@ import drawingG from "./drawingG.mjs";
 import drawingH from "./drawingH.mjs";
 import drawingI from "./drawingI.mjs";
 import drawingJ from "./drawingJ.mjs";
+import drawingK from "./drawingK.mjs";
 import debugZA from "./debugZA.mjs";
 
 export default [
@@ -21,5 +22,6 @@ export default [
   drawingH,
   drawingI,
   drawingJ,
-  debugZA,
+  drawingK,
+  // debugZA,
 ];
