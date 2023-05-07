@@ -2,7 +2,7 @@ import { React, react, ReactDOM } from "./lib/react.mjs";
 import { groupReduce } from "./lib/core.mjs";
 import context from "./lib/context.mjs";
 import drawings from "./drawings/drawings.js";
-import Menu from "./menu.mjs";
+import Menu from "./lib/menu.mjs";
 
 let DEBUG = false;
 // DEBUG = true;
