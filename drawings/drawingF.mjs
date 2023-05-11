@@ -1,8 +1,10 @@
 import { range, roundTo, sum, toBinary, zip } from "../lib/core.mjs";
-import { CenteredLine } from "../lib/lines.mjs";
+import { CenteredLine, SimpleLine } from "../lib/lines.mjs";
 import { shuffle, uniform } from "../lib/random.mjs";
 import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
+
+import { sharpieOilColors } from "../lib/pens.mjs";
 
 const defaults = {
   width: 5.5,
@@ -14,7 +16,6 @@ const variants = [
     return {
       density: 1, 
       strokeWidth: 1/64,
-      separation: 1/64,
       fullPalette: [
         'black',
         'firebrick',
@@ -28,7 +29,6 @@ const variants = [
     return {
       density: 1, 
       strokeWidth: 1/50,
-      separation: 1/50,
       fullPalette: [
         'red',
         'blue',
@@ -39,7 +39,26 @@ const variants = [
       ],
       binaryFilter: binary => sum(binary) === 4,
     };
-  }  
+  },
+  () => {
+    const length = 0.6;
+    const paletteSize = 3;
+    return {
+      density: 1, 
+      strokeWidth: 1/16,
+      height: 4 * 12,
+      width: 8 * 12,
+      fullPalette: [
+        sharpieOilColors.yellow,
+        sharpieOilColors.aqua,
+        sharpieOilColors.red,
+        sharpieOilColors.black,
+      ],
+      binaryFilter: binary => sum(binary) === paletteSize,
+      flength: () => length,
+      fy: (colorIndex) => (1 - length) * (colorIndex/(paletteSize - 1))
+    };
+  },
 ];
 
 function selectFromArrayWithBinary(array, binary) {
@@ -55,8 +74,12 @@ function Component({
   separation,
   density,
   strokeWidth,
-  binaryFilter
+  binaryFilter,
+  fy = () => 0,
+  flength = () => 1,
 }) {
+  separation = separation || strokeWidth;
+
   const palettes = shuffle(range(Math.pow(2, fullPalette.length)))
     .map(n => toBinary(n, fullPalette.length))
     .filter(binaryFilter)
@@ -71,23 +94,18 @@ function Component({
         const colorIndex = colorOrder % palette.length;
         const stroke = palette[colorIndex];
         const x = width*(i/sections + j/sections/subsections);
-        const y = height / 2;
-        // hack for plotting: have all lines of the same color overrun the canvas by the same ammount for easy grouping
-        const length = height * (1 + 1 * fullPalette.findIndex(c => c === stroke)/fullPalette.length);
-        return {
-          sortkey: stroke,
-          rendered: react`
-          <${CenteredLine}
+        const y = fy(colorIndex) * height;
+        const length = flength(colorIndex) * height;
+        console.log(colorIndex);
+        return react`<${SimpleLine}
             key="${i}-${j}"
-            center=${[x, y]}
+            start=${[x, y]}
             angle=${90}
             stroke=${stroke}
             length=${length}
-            strokeWidth=${strokeWidth}/>
-        `}
+            strokeWidth=${strokeWidth}/>`
       })}
-    ).sort((a, b) => b.sortkey > a.sortkey)
-    .map(item => item.rendered)
+    );
 }
 
 export default wrap({
