@@ -56,7 +56,26 @@ const variants = [
       ],
       binaryFilter: binary => sum(binary) === paletteSize,
       flength: () => length,
-      fy: (colorIndex) => (1 - length) * (colorIndex/(paletteSize - 1))
+      fy: ({colorIndex, i}) => (1 - length) * ((colorIndex + i) % paletteSize / (paletteSize - 1))
+    };
+  },
+  () => {
+    return {
+      density: 1, 
+      strokeWidth: 1/16,
+      height: 3.58 * 12, // each of the 5 sections has the same ratio as the entire piece
+      width: 8 * 12,
+      fullPalette: [
+        sharpieOilColors.yellow,
+        sharpieOilColors.aqua,
+        sharpieOilColors.black,
+        sharpieOilColors.red,
+        // sharpieOilColors.orange,
+        // sharpieOilColors.limeGreen,
+        // sharpieOilColors.magenta,
+        // sharpieOilColors.white,
+      ],
+      binaryFilter: binary => sum(binary) >= 3,
     };
   },
 ];
@@ -86,17 +105,19 @@ function Component({
     .map(binary => selectFromArrayWithBinary(fullPalette, binary));
   
   const sections = palettes.length;
-  const subsections =  Math.round(width / sections / separation);
+  const linesPerSection =  Math.round(width / sections / separation);
+  const lines = linesPerSection * sections;
+
+  console.log({lines, sections, linesPerSection});
 
   return palettes.flatMap((palette, i) => {
-      return shuffle(range(subsections)).map((colorOrder, j) => {
+      return shuffle(range(linesPerSection)).map((colorOrder, j) => {
         if (uniform() > density) return null;
         const colorIndex = colorOrder % palette.length;
         const stroke = palette[colorIndex];
-        const x = width*(i/sections + j/sections/subsections);
-        const y = fy(colorIndex) * height;
+        const x = width*(i/sections + j/sections/linesPerSection);
+        const y = fy({colorIndex, i, j}) * height;
         const length = flength(colorIndex) * height;
-        console.log(colorIndex);
         return react`<${SimpleLine}
             key="${i}-${j}"
             start=${[x, y]}
