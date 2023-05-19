@@ -84,8 +84,8 @@ function App() {
 
   React.useEffect(() => {
     listen(indexes => {
-      setDrawingIndex(indexes.drawingIndex);
       setVariantIndex(indexes.variantIndex);
+      setDrawingIndex(indexes.drawingIndex);
     });
   }, []);
 
