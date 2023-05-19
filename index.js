@@ -93,7 +93,7 @@ function App() {
   const variant = drawing.variants[variantIndex];
 
   return react`
-    <div style=${appStyle({ invertedColors })}>
+    <div style=${appStyle({ invertedColors })} onKeyDown=${e => console.log('!')} tabIndex="1">
       <${Wrapper} drawing=${drawing} variant=${variant}/>
       <${Menu}
         refreshApp=${refreshApp}
