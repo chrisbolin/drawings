@@ -70,11 +70,29 @@ const variants = [
         sharpieOilColors.aqua,
         sharpieOilColors.black,
         sharpieOilColors.red,
-        // sharpieOilColors.orange,
-        // sharpieOilColors.limeGreen,
-        // sharpieOilColors.magenta,
-        // sharpieOilColors.white,
       ],
+      binaryFilter: binary => sum(binary) >= 3,
+    };
+  },
+  () => {
+    return {
+      density: 1, 
+      strokeWidth: 1/16,
+      height: 3.58 * 12, // each of the 5 sections has the same ratio as the entire piece
+      width: 8 * 12,
+      fullPalette: [
+        sharpieOilColors.black,
+        sharpieOilColors.yellow,
+        sharpieOilColors.red,
+        sharpieOilColors.aqua,
+      ],
+      paletteShuffle: x => ([
+        x[3],
+        x[2],
+        x[0],
+        x[1],
+        x[4],
+      ]),
       binaryFilter: binary => sum(binary) >= 3,
     };
   },
@@ -94,39 +112,37 @@ function Component({
   density,
   strokeWidth,
   binaryFilter,
+  paletteShuffle = shuffle,
   fy = () => 0,
   flength = () => 1,
 }) {
   separation = separation || strokeWidth;
 
-  const palettes = shuffle(range(Math.pow(2, fullPalette.length)))
+  const palettes = paletteShuffle(range(Math.pow(2, fullPalette.length))
     .map(n => toBinary(n, fullPalette.length))
     .filter(binaryFilter)
-    .map(binary => selectFromArrayWithBinary(fullPalette, binary));
+    .map(binary => selectFromArrayWithBinary(fullPalette, binary)));
   
   const sections = palettes.length;
   const linesPerSection =  Math.round(width / sections / separation);
-  const lines = linesPerSection * sections;
-
-  console.log({lines, sections, linesPerSection});
 
   return palettes.flatMap((palette, i) => {
-      return shuffle(range(linesPerSection)).map((colorOrder, j) => {
-        if (uniform() > density) return null;
-        const colorIndex = colorOrder % palette.length;
-        const stroke = palette[colorIndex];
-        const x = width*(i/sections + j/sections/linesPerSection);
-        const y = fy({colorIndex, i, j}) * height;
-        const length = flength(colorIndex) * height;
-        return react`<${SimpleLine}
-            key="${i}-${j}"
-            start=${[x, y]}
-            angle=${90}
-            stroke=${stroke}
-            length=${length}
-            strokeWidth=${strokeWidth}/>`
-      })}
-    );
+    return shuffle(range(linesPerSection)).map((colorOrder, j) => {
+      if (uniform() > density) return null;
+      const colorIndex = colorOrder % palette.length;
+      const stroke = palette[colorIndex];
+      const x = width*(i/sections + j/sections/linesPerSection);
+      const y = fy({colorIndex, i, j}) * height;
+      const length = flength(colorIndex) * height;
+      return react`<${SimpleLine}
+          key="${i}-${j}"
+          start=${[x, y]}
+          angle=${90}
+          stroke=${stroke}
+          length=${length}
+          strokeWidth=${strokeWidth}/>`
+    })}
+  );
 }
 
 export default wrap({
