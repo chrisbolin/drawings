@@ -46,15 +46,15 @@ const variants = [
     return {
       density: 1, 
       strokeWidth: 1/16,
-      height: 4 * 12,
+      height: 3.58 * 12, // each of the 5 sections has the same ratio as the entire piece
       width: 8 * 12,
       fullPalette: [
         sharpieOilColors.yellow,
         sharpieOilColors.aqua,
-        sharpieOilColors.red,
         sharpieOilColors.black,
+        sharpieOilColors.red,
       ],
-      binaryFilter: binary => sum(binary) === paletteSize,
+      binaryFilter: binary => sum(binary) >= paletteSize,
       flength: () => length,
       fy: ({colorIndex, i}) => (1 - length) * ((colorIndex + i) % paletteSize / (paletteSize - 1))
     };
