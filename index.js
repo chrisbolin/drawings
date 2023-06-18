@@ -72,6 +72,16 @@ function prefersDarkMode() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
+function makeKeyHandler({ redraw }) {
+  return (event) => {
+    switch (event.key) {
+      case 'r':
+        redraw();        
+        break;    
+    }
+  };
+}
+
 function App() {
   const initialIndexes = getIndexes() || {drawingIndex: 0, variantIndex: 0};
   const [counter, setCounter] = React.useState(0);
@@ -79,7 +89,7 @@ function App() {
   const [drawingIndex, setDrawingIndex] = React.useState(initialIndexes.drawingIndex);
   const [variantIndex, setVariantIndex] = React.useState(initialIndexes.variantIndex);
 
-  const refreshApp = () => setCounter(counter + 1);
+  const redraw = () => setCounter(counter + 1);
   const invertColors = () => setInvertedColors(!invertedColors);
 
   React.useEffect(() => {
@@ -93,10 +103,14 @@ function App() {
   const variant = drawing.variants[variantIndex];
 
   return react`
-    <div style=${appStyle({ invertedColors })}>
+    <div
+      style=${appStyle({ invertedColors })}
+      onKeyDown=${makeKeyHandler({ redraw })}
+      tabIndex="1"
+    >
       <${Wrapper} drawing=${drawing} variant=${variant}/>
       <${Menu}
-        refreshApp=${refreshApp}
+        redraw=${redraw}
         invertColors=${invertColors}
         drawings=${drawings}
         drawingIndex=${drawingIndex}
