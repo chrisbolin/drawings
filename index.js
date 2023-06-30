@@ -55,7 +55,7 @@ function SVG({ width, height, children }) {
   `;
 }
 
-function Wrapper({ drawing, variant }) {;
+const Wrapper = React.memo(({ drawing, variant, uuid }) => {
   const v = variant();
   debugLog(v);
   return react`
@@ -65,19 +65,22 @@ function Wrapper({ drawing, variant }) {;
       </${SVG}>
     </${context.Provider}>
   `;
-}
+});
 
 function prefersDarkMode() {
   return false;
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
-function makeKeyHandler({ redraw }) {
+function makeKeyHandler({ redraw, toggleMenu }) {
   return (event) => {
     switch (event.key) {
       case 'r':
-        redraw();        
-        break;    
+        redraw();
+        break;
+      case 'm':
+        toggleMenu();
+        break;
     }
   };
 }
@@ -88,7 +91,9 @@ function App() {
   const [invertedColors, setInvertedColors] = React.useState(prefersDarkMode());
   const [drawingIndex, setDrawingIndex] = React.useState(initialIndexes.drawingIndex);
   const [variantIndex, setVariantIndex] = React.useState(initialIndexes.variantIndex);
-
+  const [menuShown, setMenuShown] = React.useState(true);
+  
+  const toggleMenu = () => setMenuShown(!menuShown);
   const redraw = () => setCounter(counter + 1);
   const invertColors = () => setInvertedColors(!invertedColors);
 
@@ -105,12 +110,18 @@ function App() {
   return react`
     <div
       style=${appStyle({ invertedColors })}
-      onKeyDown=${makeKeyHandler({ redraw })}
+      onKeyDown=${makeKeyHandler({ redraw, toggleMenu })}
       tabIndex="1"
     >
-      <${Wrapper} drawing=${drawing} variant=${variant}/>
+      <${Wrapper}
+        drawing=${drawing}
+        variant=${variant}
+        uuid=${counter}
+      />
       <${Menu}
         redraw=${redraw}
+        menuShown=${menuShown}
+        toggleMenu=${toggleMenu}
         invertColors=${invertColors}
         drawings=${drawings}
         drawingIndex=${drawingIndex}
