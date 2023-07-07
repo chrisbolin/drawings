@@ -79,6 +79,7 @@ export function Component({
       x2=${cx + x1}
       y2=${cy + y1}
       stroke="black"
+      key=${i}
       strokeWidth="${strokeWidth}"
     />`;
   });
