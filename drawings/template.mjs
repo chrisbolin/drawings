@@ -2,16 +2,17 @@ import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
 
 const defaults = {
-  width: 100,
-  height: 50,
+  width: 6,
+  height: 4,
+  strokeWidth: 1/50,
 };
 
 const variants = [
   () => {
     const strokeWidth = 1/50;
     return {
-      height: 4,
-      width: 6,
+      height: 400,
+      width: 600,
       strokeWidth,
     };
   },

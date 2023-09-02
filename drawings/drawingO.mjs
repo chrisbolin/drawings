@@ -1,6 +1,6 @@
 import { range, toRadians } from "../lib/core.mjs";
-import { CenteredLine, SimpleLine, centerOfMass } from "../lib/lines.mjs";
-import { pickRandom, uniform } from "../lib/random.mjs";
+import { CenteredLine } from "../lib/lines.mjs";
+import { pickRandomWeighted, uniform } from "../lib/random.mjs";
 import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
 
@@ -27,19 +27,14 @@ const variants = [
     const center = [cx, cy];
     return {
       total: 10000,
-      density: 6,
+      density: 4,
       inclusionPolygon: makeTriange(center, 2),
       exclusionPolygon: makeTriange(center, 1.1),
       getLineLength() {
-        const key = pickRandom([0, 0, 0, 0, 0, 0, 0, 1]);
-        switch (key) {
-          case 0:
-            return uniform(0.05, 0.5);
-          case 1:
-            return uniform(1, 3);
-        }
-        ;
-
+        return pickRandomWeighted([
+          {weight: 100, value: uniform(0.05, 0.4)}, // shorts
+          {weight: 1, value: uniform(1, 4)}, // longs
+        ]);
       },
       getAngle() {
         return 30;
