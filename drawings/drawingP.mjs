@@ -1,6 +1,6 @@
 import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
-import Dot from "../lib/dot.mjs";
+import Point from "../lib/point.mjs";
 
 const defaults = {
   width: 6,
@@ -32,9 +32,9 @@ export function Component({
   width,
   height
 }) {
-  const points = getRandomPointArray([0, 0, width/2, height/2], 1000);
+  const points = getRandomPointArray([0, 0, width/4, height/2], 1000);
   return points.map(
-    ([x, y], i) => react`<${Dot} x=${x} y=${y} key=${i}/>`
+    ([x, y], i) => react`<${Point} x=${x} y=${y} key=${i}/>`
   );
 }
 
