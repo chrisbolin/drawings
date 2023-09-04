@@ -1,6 +1,8 @@
 import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
 import Point from "../lib/point.mjs";
+import { range } from "../lib/core.mjs";
+import { uniform } from "../lib/random.mjs";
 
 const defaults = {
   width: 6,
@@ -11,31 +13,44 @@ const defaults = {
 const variants = [
   () => {
     return {
+      nPoints: 1000,
+      nLines: 20,
+      xMin: 0.1,
+      xMax: 0.9,
+      amplitude: .8
     };
   },
 ];
 
-function getRandomPointArray(boundingRect, count) {
-  const [xMin, yMin, xMax, yMax] = boundingRect;
-  const pointArray = [];
-
-  for (let i = 0; i < count; i++) {
-    const randomX = Math.random() * (xMax - xMin) + xMin;
-    const randomY = Math.random() * (yMax - yMin) + yMin;
-    pointArray.push([randomX, randomY]);
-  }
-
-  return pointArray;
-}
-
 export function Component({
   width,
-  height
+  height,
+  nPoints,
+  xMin,
+  xMax,
+  nLines,
+  amplitude
 }) {
-  const points = getRandomPointArray([0, 0, width/4, height/2], 1000);
-  return points.map(
-    ([x, y], i) => react`<${Point} x=${x} y=${y} key=${i}/>`
-  );
+  const xDistance = (xMax - xMin) * width;
+  const spaces = nLines - 1;
+  const Y = range(nPoints).map(() => uniform(0, height));
+  let X = range(nPoints).fill(xMin);
+  const realAmplitude = amplitude * xDistance / spaces;
+  const xStep = (xDistance / spaces);
+
+  const lineX = [X];
+  for (let xIndex = 0; xIndex < nLines - 1; xIndex++) {
+    X = X.map(x => x + x * realAmplitude * uniform());
+    lineX.push(X);
+  }
+
+  return lineX.map((X, lineIndex) => Y.map((y, pointIndex) => react`
+      <${Point}
+        x=${X[pointIndex] + xStep * lineIndex}
+        y=${y}
+        key="${lineIndex}.${pointIndex}"
+      />`
+  ));
 }
 
 export default wrap({
