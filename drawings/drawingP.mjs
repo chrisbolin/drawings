@@ -2,7 +2,8 @@ import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
 import Point from "../lib/point.mjs";
 import { range } from "../lib/core.mjs";
-import { uniform } from "../lib/random.mjs";
+import { uniform, uniformArray } from "../lib/random.mjs";
+import { grid1d } from "../lib/grid.mjs";
 
 const defaults = {
   width: 6,
@@ -11,43 +12,55 @@ const defaults = {
 };
 
 const variants = [
-  () => {
+  ({ height }) => {
     return {
-      nPoints: 1000,
-      nLines: 20,
-      xMin: 0.1,
-      xMax: 0.9,
-      amplitude: .8
+      Y: uniformArray(500, 0, height),
+      nLines: 10,
+      xBounds: [0.1, 0.9],
+      x0: 0.1,
+      dx: x => x * .8 * uniform(),
+      staticFirstLine: true,
+    };
+  },
+  ({ height }) => {
+    return {
+      Y: grid1d(250, 0, height),
+      nLines: 25,
+      xBounds: [0.1, 1],
+      x0: 0.1,
+      dx: (x, i) => i === 0 ? uniform(0, 0.01) : 2.2 * x,
+      staticFirstLine: false,
     };
   },
 ];
 
 export function Component({
   width,
-  height,
-  nPoints,
-  xMin,
-  xMax,
+  xBounds,
   nLines,
-  amplitude
+  Y,
+  dx,
+  staticFirstLine,
+  x0
 }) {
-  const xDistance = (xMax - xMin) * width;
+  const [xStart, xEnd] = xBounds;
+  const xDistance = (xEnd - xStart) * width;
   const spaces = nLines - 1;
-  const Y = range(nPoints).map(() => uniform(0, height));
-  let X = range(nPoints).fill(xMin);
-  const realAmplitude = amplitude * xDistance / spaces;
+  let X = range(Y.length).fill(0);
   const xStep = (xDistance / spaces);
 
-  const lineX = [X];
-  for (let xIndex = 0; xIndex < nLines - 1; xIndex++) {
-    X = X.map(x => x + x * realAmplitude * uniform());
-    lineX.push(X);
+  const XX = staticFirstLine ? [X] : [];
+  for (let ignore; XX.length < nLines; ignore++) {
+    X = X.map(x => x + xStep * dx((x || x0), XX.length));
+    XX.push(X);
   }
 
-  return lineX.map((X, lineIndex) => Y.map((y, pointIndex) => react`
+  return XX.map((X, lineIndex) => X
+    .filter(x => x <= width)
+    .map((x, pointIndex) => react`
       <${Point}
-        x=${X[pointIndex] + xStep * lineIndex}
-        y=${y}
+        x=${x + xStep * lineIndex + xStart}
+        y=${Y[pointIndex]}
         key="${lineIndex}.${pointIndex}"
       />`
   ));
