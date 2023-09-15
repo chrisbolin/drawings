@@ -21,7 +21,7 @@ const variants = [
 export function Component({
   strokeWidth
 }) {
-  return react``;
+  return react`ok`;
 }
 
 export default wrap({

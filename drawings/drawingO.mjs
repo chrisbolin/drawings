@@ -1,5 +1,5 @@
-import { range, toRadians } from "../lib/core.mjs";
-import { CenteredLine } from "../lib/lines.mjs";
+import { range } from "../lib/core.mjs";
+import { CenteredLine, triangle } from "../lib/lines.mjs";
 import { pickRandomWeighted, uniform } from "../lib/random.mjs";
 import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
@@ -10,16 +10,6 @@ const defaults = {
   strokeWidth: 1/100,
 };
 
-function makeTriange([x, y], radius) {
-  return range(3).map(axis => {
-    const axisAngle = 30 + 120 * axis;
-    return [
-      x + radius * Math.cos(toRadians(axisAngle)),
-      y + radius * Math.sin(toRadians(axisAngle)),
-    ];
-  });
-}
-
 const variants = [
   ({ width, height }) => {
     const cx = 0.5 * width;
@@ -28,8 +18,8 @@ const variants = [
     return {
       total: 10000,
       density: 4,
-      inclusionPolygon: makeTriange(center, 2),
-      exclusionPolygon: makeTriange(center, 1.1),
+      inclusionPolygon: triangle(center, 2),
+      exclusionPolygon: triangle(center, 1.1),
       getLineLength() {
         return pickRandomWeighted([
           {weight: 100, value: uniform(0.05, 0.4)}, // shorts
