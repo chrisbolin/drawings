@@ -1,4 +1,6 @@
-import { Polyline, triangle } from "../lib/lines.mjs";
+import { range } from "../lib/core.mjs";
+import { Polyline, centerPointsByBounds, distance, triangle } from "../lib/lines.mjs";
+import { pickRandom } from "../lib/random.mjs";
 import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
 
@@ -20,7 +22,6 @@ function splitTriangle(vertexes, n, topVertexIndex) {
   const bVertex = vertexes[(topVertexIndex + 1) % 3];
   const cVertex = vertexes[(topVertexIndex + 2) % 3];
 
-  debugger;
   const bPrimeVertex = pointAlongSegment([bVertex, aVertex], distance);
   const cPrimeVertex = pointAlongSegment([cVertex, aVertex], distance);
 
@@ -49,29 +50,49 @@ function splitTriangle(vertexes, n, topVertexIndex) {
   return newTriangles;
 }
 
+let runCount = 0;
+let MAX_RUNS = 500000;
+function recursivelySplitTriangle(initialTriangle, divisions, minSideLength) {
+  if (runCount++ > MAX_RUNS) throw new Error('MAX_RUNS EXCEEDED');
+
+  const lengthOfSide = distance(initialTriangle[0], initialTriangle[1]);
+
+  // we can only use the divisions that give us a side length at least minSideLength
+  const validDivisions = divisions.filter(n => (lengthOfSide / n) >= minSideLength);
+
+  // if no valid divisions, bail
+  if (validDivisions.length === 0) return [initialTriangle];
+
+  // otherwise, split the triangle and split each of the splits
+  const division = pickRandom(validDivisions);
+  const direction = pickRandom(range(3));
+  // recurse!
+  const subtriangles = splitTriangle(initialTriangle, division, direction)
+    .flatMap(sub => recursivelySplitTriangle(sub, validDivisions, minSideLength));
+
+  return [initialTriangle, ...subtriangles];
+}
+
 const defaults = {
   width: 6,
   height: 4,
-  strokeWidth: 1/50,
+  strokeWidth: 1/100,
 };
 
 const variants = [
-  ({ center }) => {
-    console.log({center});
-    const initial = triangle(center, 1);
-    const split = splitTriangle(initial, 10, 0);
+  ({ center, strokeWidth }) => {
+    const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
+    const splits = recursivelySplitTriangle(initialTriangle, [2, 4, 6, 8, 10], strokeWidth * 3)
     return {
-      polygons: [initial, ...split]
+      polygons: splits
     };
   },
 ];
 
 export function Component({
   strokeWidth,
-  polygons,
-  ...props
+  polygons
 }) {
-  console.log({props});
   return polygons.map((polygon, i) => react`
     <${Polyline}
       points=${polygon}

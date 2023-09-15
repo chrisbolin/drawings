@@ -1,5 +1,5 @@
 import { range, toRadians } from "../lib/core.mjs";
-import { Polyline, centerPoints } from "../lib/lines.mjs";
+import { Polyline, centerPointsByMass } from "../lib/lines.mjs";
 import { uniform } from "../lib/random.mjs";
 import { react } from "../lib/react.mjs";
 import vector from "../lib/vector.mjs";
@@ -62,7 +62,7 @@ export function Component({
     points.push(nextPoint(points[points.length - 1], i));
   }
 
-  return react`<${Polyline} points=${centerPoints(points, [width/2, height/2])} strokeWidth=${strokeWidth} cen/>`
+  return react`<${Polyline} points=${centerPointsByMass(points, [width/2, height/2])} strokeWidth=${strokeWidth} cen/>`
 }
 
 export default wrap({
