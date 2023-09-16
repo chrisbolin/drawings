@@ -82,7 +82,14 @@ const defaults = {
 const variants = [
   ({ center, strokeWidth }) => {
     const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
-    const splits = recursivelySplitTriangle(initialTriangle, [2, 4, 6, 8, 10], strokeWidth * 3)
+    const splits = recursivelySplitTriangle(initialTriangle, [2, 4, 6, 8, 10], strokeWidth * 2.5)
+    return {
+      polygons: splits
+    };
+  },
+  ({ center, strokeWidth }) => {
+    const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
+    const splits = recursivelySplitTriangle(initialTriangle, [2, 4, 6, 8, 10], strokeWidth * 10)
     return {
       polygons: splits
     };
