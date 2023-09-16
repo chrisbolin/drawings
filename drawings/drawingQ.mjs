@@ -1,5 +1,5 @@
 import { range } from "../lib/core.mjs";
-import { PointToPointLine, Polyline, centerPointsByBounds, distance, triangle } from "../lib/lines.mjs";
+import { PointToPointMultilines, centerPointsByBounds, distance, triangle } from "../lib/lines.mjs";
 import { pickRandom } from "../lib/random.mjs";
 import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
@@ -51,7 +51,7 @@ function splitTriangle(vertexes, n, topVertexIndex) {
 }
 
 let runCount = 0;
-let MAX_RUNS = 500000;
+let MAX_RUNS = 2000000;
 function recursivelySplitTriangle(initialTriangle, divisions, minSideLength) {
   if (runCount++ > MAX_RUNS) throw new Error('MAX_RUNS EXCEEDED');
 
@@ -89,14 +89,21 @@ function polygonToLines(polygon) {
 const variants = [
   ({ center, strokeWidth }) => {
     const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
-    const splits = recursivelySplitTriangle(initialTriangle, [2, 4, 6, 8, 10], strokeWidth * 2.5)
+    const splits = recursivelySplitTriangle(initialTriangle, range(2,10), strokeWidth * 3)
     return {
       polygons: splits
     };
   },
   ({ center, strokeWidth }) => {
     const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
-    const polygons = recursivelySplitTriangle(initialTriangle, [2, 4, 6, 8, 10], strokeWidth * 10);
+    const polygons = recursivelySplitTriangle(initialTriangle, range(3, 10), strokeWidth * 2.5);
+    return {
+      polygons,
+    };
+  },
+  ({ center, strokeWidth }) => {
+    const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
+    const polygons = recursivelySplitTriangle(initialTriangle, [3], strokeWidth * 2.5);
     return {
       polygons,
     };
@@ -108,13 +115,11 @@ export function Component({
   polygons
 }) {
   const lines = polygons.flatMap(polygonToLines);
-  return lines.map((line, i) => react`
-    <${PointToPointLine}
-      points=${line}
-      key="l${i}"
+  return react`
+    <${PointToPointMultilines}
+      lines=${lines}
       strokeWidth=${strokeWidth}
-    />`
-  );
+    />`;
 }
 
 export default wrap({
