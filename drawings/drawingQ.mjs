@@ -1,5 +1,5 @@
 import { range } from "../lib/core.mjs";
-import { Polyline, centerPointsByBounds, distance, triangle } from "../lib/lines.mjs";
+import { PointToPointLine, Polyline, centerPointsByBounds, distance, triangle } from "../lib/lines.mjs";
 import { pickRandom } from "../lib/random.mjs";
 import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
@@ -79,6 +79,13 @@ const defaults = {
   strokeWidth: 1/100,
 };
 
+function polygonToLines(polygon) {
+  const n = polygon.length;
+  return polygon.map(
+    (point, i) => [point, polygon[(i + 1) % n]]
+  );
+}
+
 const variants = [
   ({ center, strokeWidth }) => {
     const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
@@ -89,9 +96,9 @@ const variants = [
   },
   ({ center, strokeWidth }) => {
     const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
-    const splits = recursivelySplitTriangle(initialTriangle, [2, 4, 6, 8, 10], strokeWidth * 10)
+    const polygons = recursivelySplitTriangle(initialTriangle, [2, 4, 6, 8, 10], strokeWidth * 10);
     return {
-      polygons: splits
+      polygons,
     };
   },
 ];
@@ -100,12 +107,12 @@ export function Component({
   strokeWidth,
   polygons
 }) {
-  return polygons.map((polygon, i) => react`
-    <${Polyline}
-      points=${polygon}
-      key=${i}
+  const lines = polygons.flatMap(polygonToLines);
+  return lines.map((line, i) => react`
+    <${PointToPointLine}
+      points=${line}
+      key="l${i}"
       strokeWidth=${strokeWidth}
-      closed
     />`
   );
 }
