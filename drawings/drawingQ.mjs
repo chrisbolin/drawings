@@ -1,5 +1,5 @@
 import { range } from "../lib/core.mjs";
-import { PointToPointMultilines, centerPointsByBounds, distance, triangle } from "../lib/lines.mjs";
+import { PointToPointMultilines, centerPointsByBounds, deduplicateLines, distance, triangle } from "../lib/lines.mjs";
 import { pickRandom } from "../lib/random.mjs";
 import { react } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
@@ -103,7 +103,7 @@ const variants = [
   },
   ({ center, strokeWidth }) => {
     const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
-    const polygons = recursivelySplitTriangle(initialTriangle, [3], strokeWidth * 2.5);
+    const polygons = recursivelySplitTriangle(initialTriangle, [3], 1/4);
     return {
       polygons,
     };
@@ -114,7 +114,13 @@ export function Component({
   strokeWidth,
   polygons
 }) {
-  const lines = polygons.flatMap(polygonToLines);
+  const lines = deduplicateLines(polygons.flatMap(polygonToLines));
+  console.table({
+    polygons: polygons.length,
+    maxLines: polygons.length * 3,
+    lines: lines.length,
+    compression: 1 - lines.length / (polygons.length * 3)
+  });
   return react`
     <${PointToPointMultilines}
       lines=${lines}
