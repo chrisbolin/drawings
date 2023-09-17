@@ -103,7 +103,7 @@ const variants = [
   },
   ({ center, strokeWidth }) => {
     const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
-    const polygons = recursivelySplitTriangle(initialTriangle, [3], 1/4);
+    const polygons = recursivelySplitTriangle(initialTriangle, [2, 4, 7, 9, 11, 13], strokeWidth * 2.5);
     return {
       polygons,
     };
@@ -117,9 +117,7 @@ export function Component({
   const lines = deduplicateLines(polygons.flatMap(polygonToLines));
   console.table({
     polygons: polygons.length,
-    maxLines: polygons.length * 3,
-    lines: lines.length,
-    compression: 1 - lines.length / (polygons.length * 3)
+    lines: lines.length
   });
   return react`
     <${PointToPointMultilines}
