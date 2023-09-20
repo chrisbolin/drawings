@@ -50,12 +50,22 @@ function splitTriangle(vertexes, n, topVertexIndex) {
   return newTriangles;
 }
 
+function polygonSideLengths(polygon) {
+  return range(polygon.length).map(i => 
+    distance(polygon[i], polygon[(i + 1) % polygon.length])
+  );
+}
+
+function shortestSide(polygon) {
+  return Math.min(...polygonSideLengths(polygon));
+}
+
 let runCount = 0;
 let MAX_RUNS = 2000000;
 function recursivelySplitTriangle(initialTriangle, divisions, minSideLength) {
   if (runCount++ > MAX_RUNS) throw new Error('MAX_RUNS EXCEEDED');
 
-  const lengthOfSide = distance(initialTriangle[0], initialTriangle[1]);
+  const lengthOfSide = shortestSide(initialTriangle);
 
   // we can only use the divisions that give us a side length at least minSideLength
   const validDivisions = divisions.filter(n => (lengthOfSide / n) >= minSideLength);
@@ -104,6 +114,17 @@ const variants = [
   ({ center, strokeWidth }) => {
     const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
     const polygons = recursivelySplitTriangle(initialTriangle, [2, 4, 7, 9, 11, 13], strokeWidth * 2.5);
+    return {
+      polygons,
+    };
+  },
+  ({ center, strokeWidth }) => {
+    const initialTriangle = [
+      [0.5,0.5],
+      [3.5,3.5],
+      [0.5,3.5],
+    ];
+    const polygons = recursivelySplitTriangle(initialTriangle, range(2, 5), strokeWidth * 2.5);
     return {
       polygons,
     };
