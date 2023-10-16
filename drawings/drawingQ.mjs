@@ -1,8 +1,9 @@
 import { range } from "../lib/core.mjs";
 import { PointToPointMultilines, centerPointsByBounds, deduplicateLines, distance, triangle } from "../lib/lines.mjs";
 import { pickRandom } from "../lib/random.mjs";
-import { react } from "../lib/react.mjs";
+import { react, React } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
+import { SVGComment } from "../lib/comment.mjs";
 
 function pointAlongSegment(segment, distance) {
   const [startPoint, endPoint] = segment;
@@ -126,7 +127,17 @@ const variants = [
     ];
     const polygons = recursivelySplitTriangle(initialTriangle, range(2, 5), strokeWidth * 2.5);
     return {
+      about: 'right triangle',
       polygons,
+    };
+  },
+  ({ center, strokeWidth }) => {
+    const initialTriangle = centerPointsByBounds(triangle([0, 0], 2), center);
+    const evens = range(1,5).map(x => x * 2);
+    const splits = recursivelySplitTriangle(initialTriangle, evens, strokeWidth * 3)
+    return {
+      about: 'Just even subdivisions, so no child will have the same size as its parent',
+      polygons: splits
     };
   },
 ];
@@ -136,15 +147,20 @@ export function Component({
   polygons
 }) {
   const lines = deduplicateLines(polygons.flatMap(polygonToLines));
-  console.table({
+  const comment = {
     polygons: polygons.length,
     lines: lines.length
-  });
+  }
+  console.table(comment);
   return react`
-    <${PointToPointMultilines}
+    <${React.Fragment}>
+      <${SVGComment}>${comment}</${SVGComment}>
+      <${PointToPointMultilines}
       lines=${lines}
       strokeWidth=${strokeWidth}
-    />`;
+      />
+    </${React.Fragment}>
+  `;
 }
 
 export default wrap({
