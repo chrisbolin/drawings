@@ -3,7 +3,6 @@ import { PointToPointMultilines, centerPointsByBounds, deduplicateLines, distanc
 import { pickRandom } from "../lib/random.mjs";
 import { react, React } from "../lib/react.mjs";
 import wrap from "../lib/wrap.mjs";
-import { SVGComment } from "../lib/comment.mjs";
 
 function pointAlongSegment(segment, distance) {
   const [startPoint, endPoint] = segment;
@@ -142,29 +141,36 @@ const variants = [
   },
 ];
 
-export function Component({
+function prepare(inputs) {
+  const lines = deduplicateLines(inputs.polygons.flatMap(polygonToLines));
+  return {
+    ...inputs,
+    lines,
+    about: [
+      inputs.about,
+      {
+        polygons: inputs.polygons.length,
+        lines: lines.length
+      }
+    ],
+  };
+}
+
+function Component({
   strokeWidth,
-  polygons
+  lines,
 }) {
-  const lines = deduplicateLines(polygons.flatMap(polygonToLines));
-  const comment = {
-    polygons: polygons.length,
-    lines: lines.length
-  }
-  console.table(comment);
   return react`
-    <${React.Fragment}>
-      <${SVGComment}>${comment}</${SVGComment}>
-      <${PointToPointMultilines}
-      lines=${lines}
-      strokeWidth=${strokeWidth}
-      />
-    </${React.Fragment}>
+    <${PointToPointMultilines}
+    lines=${lines}
+    strokeWidth=${strokeWidth}
+    />
   `;
 }
 
 export default wrap({
   variants,
   defaults,
+  prepare,
   Component
 });

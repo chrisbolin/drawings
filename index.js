@@ -4,6 +4,7 @@ import context from "./lib/context.mjs";
 import drawings from "./drawings/drawings.js";
 import Menu from "./lib/menu.mjs";
 import { getIndexes, listen } from "./lib/navigator.mjs";
+import { SVGComment } from "./lib/comment.mjs";
 
 let DEBUG = false;
 // DEBUG = true;
@@ -47,20 +48,25 @@ function groupByStroke(renderedElements) {
 }
 
 function SVG({ width, height, children }) {
-  const groupedChildren = groupByStroke(children);
   return react`
     <svg id="mainDrawing" viewBox="0 0 ${width} ${height}" fill="white" xmlns="http://www.w3.org/2000/svg" style=${svgStyle}>
-      ${groupedChildren}
+      ${children}
     </svg>
   `;
 }
 
-const Wrapper = React.memo(({ drawing, variant, uuid }) => {
+const Wrapper = React.memo(({ drawing, variant, variantIndex, uuid }) => {
   const v = variant();
   debugLog(v);
+  const commentObject = {
+    name: drawing.name,
+    variantIndex,
+    about: v.about
+  };
   return react`
     <${context.Provider} value=${v}>
       <${SVG} width=${v.width} height=${v.height}>
+        <${SVGComment}>${commentObject}</${SVGComment}>
         <${drawing.Component} ...${v}/>
       </${SVG}>
     </${context.Provider}>
@@ -115,6 +121,7 @@ function App() {
     >
       <${Wrapper}
         drawing=${drawing}
+        variantIndex=${variantIndex}
         variant=${variant}
         uuid=${counter}
       />
