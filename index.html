@@ -1,13 +1,11 @@
-<head>
-  <title>drawings</title>
-  <script>
-    var indexScript = document.createElement('script');
-    // src with cache-bust
-    indexScript.setAttribute('src', `./index.js?${Date.now()}`);
-    indexScript.setAttribute('type', 'module');
-    document.head.appendChild(indexScript);
-  </script>
-</head>
-<body style="margin: 0">
-  <div id="app"></div>  
-</body>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>drawings</title>
+  </head>
+  <body style="margin: 0">
+    <div id="app"></div>
+    <script type="module" src="/index.js"></script>
+  </body>
+</html>

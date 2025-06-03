@@ -138,4 +138,6 @@ function App() {
   `
 }
 
-ReactDOM.render(react`<${App}/>`, document.getElementById("app"));
+const root = ReactDOM.createRoot(document.getElementById("app"));
+root.render(react`<${App}/>`);
+
