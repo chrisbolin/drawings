@@ -1,4 +1,5 @@
-- Serve: `python3 -m http.server 8321`
+- Install: `npm install`
+- Serve (with hot reload): `npm run dev`
   - if port open, find with `sudo lsof -i :8321`
   - kill with `kill 98765` (replace with PID)
 
